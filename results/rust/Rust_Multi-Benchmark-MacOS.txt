@@ -1,0 +1,625 @@
+================================================================================
+EventChains Multi-Tier Performance Benchmark (M4 iMac with 16GB of ram)
+================================================================================
+
+
+=== TEST CASE: 100 nodes, 500 edges, 100 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 99
+
+Running Tier 1 Benchmarks...
+  Benchmarking bare function calls... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 2 Benchmarks...
+  Benchmarking manual instrumented... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 3 Benchmarks...
+  Benchmarking 0 middleware... 
+  Benchmarking 1 middleware... 
+  Benchmarking 3 middleware... 
+  Benchmarking 5 middleware... 
+  Benchmarking 10 middleware... 
+
+Running Tier 4 Benchmarks...
+  Benchmarking manual (logging + timing)... 
+  Benchmarking EventChains (logging + timing)... 
+
+================================================================================
+EventChains Performance Analysis - Multi-Tier Benchmark Report
+================================================================================
+
+================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+================================================================================
+
+Comparison:
+   Baseline: 3 direct function calls (no error handling, no tracking)
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of the orchestration framework itself
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                  86.57        83.94        0.00%
+EventChains (no middleware)                     92.87        89.62       +7.27%
+
+Analysis:
+  Framework overhead: 7.27%
+  Absolute cost: 6.30µs
+  This represents the cost of:
+    - Event wrapping and trait dispatch
+    - Context creation and type erasure
+    - Result enum wrapping
+
+================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with error handling, name tracking, context
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of abstraction vs hand-rolled equivalent
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (instrumented baseline)                  86.41        82.67        0.00%
+EventChains (no middleware)                     98.73        89.42      +14.26%
+
+Analysis:
+  Abstraction overhead: 14.26%
+  Absolute cost: 12.32µs
+  This represents the cost of:
+    - Generic trait-based design vs concrete types
+    - Dynamic dispatch vs static dispatch
+    - Type-erased context vs typed variables
+
+================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+================================================================================
+
+Comparison:
+   EventChains with 0, 1, 3, 5, and 10 middleware layers
+   Metric: Incremental cost per middleware layer
+
+--------------------------------------------------------------------------------
+Configuration                               Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+0 middleware (baseline)                         99.13        89.73        0.00%
+1 middleware                                    93.89        92.04      +-5.29%
+3 middleware                                   104.26        98.71       +5.18%
+5 middleware                                   107.44       103.58       +8.38%
+10 middleware                                  135.19       119.67      +36.38%
+
+Analysis:
+  Cost per middleware layer:
+    1 middleware:  -5.239µs per layer
+    3 middleware:  1.711µs per layer
+    5 middleware:  1.662µs per layer
+    10 middleware: 3.606µs per layer
+
+  Scaling characteristics:
+     Linear scaling (good) - ratio: -0.69x
+
+================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with logging, timing, error handling
+   EventChains: Optimized version (4 events) with logging + timing middleware
+   Metric: Cost vs equivalent manual instrumentation
+   Note: Both process all nodes in bulk (not node-by-node)
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (logging + timing)                       87.42        83.85     baseline
+EventChains (logging + timing)                  96.96        93.67      +10.92%
+
+Analysis:
+  Performance difference: +9.54µs (+10.92%)
+   EventChains has overhead, but provides:
+
+  Value proposition:
+     Consistent middleware API across all events
+     Composable and reusable instrumentation
+     No manual integration of cross-cutting concerns
+     Type-safe context passing
+
+================================================================================
+Executive Summary
+================================================================================
+
+Key Findings:
+  1. Framework Overhead (Tier 1): 7.27%
+      Pure cost of orchestration pattern
+
+  2. Abstraction Overhead (Tier 2): 14.26%
+      Cost of generic design vs hand-rolled equivalent
+
+  3. Middleware Cost (Tier 3): 1.662µs per layer
+      Incremental cost for each middleware added
+
+  4. Real-World Comparison (Tier 4): 10.92%
+      EventChains vs manual instrumentation
+
+Interpretation:
+   Tier 1 shows the minimum cost you pay for using the pattern
+   Tier 2 shows you're not paying much more than a careful manual approach
+   Tier 3 shows the cost scales linearly with middleware complexity
+   Tier 4 shows real-world cost is comparable to manual equivalent
+
+================================================================================
+
+
+=== TEST CASE: 500 nodes, 2500 edges, 50 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 499
+
+Running Tier 1 Benchmarks...
+  Benchmarking bare function calls... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 2 Benchmarks...
+  Benchmarking manual instrumented... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 3 Benchmarks...
+  Benchmarking 0 middleware... 
+  Benchmarking 1 middleware... 
+  Benchmarking 3 middleware... 
+  Benchmarking 5 middleware... 
+  Benchmarking 10 middleware... 
+
+Running Tier 4 Benchmarks...
+  Benchmarking manual (logging + timing)... 
+  Benchmarking EventChains (logging + timing)... 
+
+================================================================================
+EventChains Performance Analysis - Multi-Tier Benchmark Report
+================================================================================
+
+================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+================================================================================
+
+Comparison:
+   Baseline: 3 direct function calls (no error handling, no tracking)
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of the orchestration framework itself
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                 742.05       517.29        0.00%
+EventChains (no middleware)                    572.57       534.31     +-22.84%
+
+Analysis:
+  Framework overhead: -22.84%
+  Absolute cost: -169.47µs
+  This represents the cost of:
+    - Event wrapping and trait dispatch
+    - Context creation and type erasure
+    - Result enum wrapping
+
+================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with error handling, name tracking, context
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of abstraction vs hand-rolled equivalent
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (instrumented baseline)                 536.00       509.48        0.00%
+EventChains (no middleware)                   1195.74       575.50     +123.09%
+
+Analysis:
+  Abstraction overhead: 123.09%
+  Absolute cost: 659.74µs
+  This represents the cost of:
+    - Generic trait-based design vs concrete types
+    - Dynamic dispatch vs static dispatch
+    - Type-erased context vs typed variables
+
+================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+================================================================================
+
+Comparison:
+   EventChains with 0, 1, 3, 5, and 10 middleware layers
+   Metric: Incremental cost per middleware layer
+
+--------------------------------------------------------------------------------
+Configuration                               Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+0 middleware (baseline)                       2462.71      1399.21        0.00%
+1 middleware                                  1114.55      1006.98     +-54.74%
+3 middleware                                   697.91       547.56     +-71.66%
+5 middleware                                   561.55       543.75     +-77.20%
+10 middleware                                  738.35       562.06     +-70.02%
+
+Analysis:
+  Cost per middleware layer:
+    1 middleware:  -1348.166µs per layer
+    3 middleware:  -588.267µs per layer
+    5 middleware:  -380.232µs per layer
+    10 middleware: -172.437µs per layer
+
+  Scaling characteristics:
+     Linear scaling (good) - ratio: 0.13x
+
+================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with logging, timing, error handling
+   EventChains: Optimized version (4 events) with logging + timing middleware
+   Metric: Cost vs equivalent manual instrumentation
+   Note: Both process all nodes in bulk (not node-by-node)
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (logging + timing)                      616.33       523.02     baseline
+EventChains (logging + timing)                 617.47       527.14       +0.19%
+
+Analysis:
+  Performance difference: +1.15µs (+0.19%)
+   EventChains provides equivalent performance for same functionality
+
+  Value proposition:
+     Consistent middleware API across all events
+     Composable and reusable instrumentation
+     No manual integration of cross-cutting concerns
+     Type-safe context passing
+
+================================================================================
+Executive Summary
+================================================================================
+
+Key Findings:
+  1. Framework Overhead (Tier 1): -22.84%
+      Pure cost of orchestration pattern
+
+  2. Abstraction Overhead (Tier 2): 123.09%
+      Cost of generic design vs hand-rolled equivalent
+
+  3. Middleware Cost (Tier 3): -380.232µs per layer
+      Incremental cost for each middleware added
+
+  4. Real-World Comparison (Tier 4): 0.19%
+      EventChains vs manual instrumentation
+
+Interpretation:
+   Tier 1 shows the minimum cost you pay for using the pattern
+   Tier 2 shows you're not paying much more than a careful manual approach
+   Tier 3 shows the cost scales linearly with middleware complexity
+   Tier 4 shows real-world cost is comparable to manual equivalent
+
+================================================================================
+
+
+=== TEST CASE: 1000 nodes, 5000 edges, 30 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 999
+
+Running Tier 1 Benchmarks...
+  Benchmarking bare function calls... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 2 Benchmarks...
+  Benchmarking manual instrumented... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 3 Benchmarks...
+  Benchmarking 0 middleware... 
+  Benchmarking 1 middleware... 
+  Benchmarking 3 middleware... 
+  Benchmarking 5 middleware... 
+  Benchmarking 10 middleware... 
+
+Running Tier 4 Benchmarks...
+  Benchmarking manual (logging + timing)... 
+  Benchmarking EventChains (logging + timing)... 
+
+================================================================================
+EventChains Performance Analysis - Multi-Tier Benchmark Report
+================================================================================
+
+================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+================================================================================
+
+Comparison:
+   Baseline: 3 direct function calls (no error handling, no tracking)
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of the orchestration framework itself
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                2717.43      2116.46        0.00%
+EventChains (no middleware)                   2139.00      1560.21     +-21.29%
+
+Analysis:
+  Framework overhead: -21.29%
+  Absolute cost: -578.43µs
+  This represents the cost of:
+    - Event wrapping and trait dispatch
+    - Context creation and type erasure
+    - Result enum wrapping
+
+================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with error handling, name tracking, context
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of abstraction vs hand-rolled equivalent
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (instrumented baseline)                2640.64      1629.27        0.00%
+EventChains (no middleware)                   1593.52      1279.12     +-39.65%
+
+Analysis:
+  Abstraction overhead: -39.65%
+  Absolute cost: -1047.12µs
+  This represents the cost of:
+    - Generic trait-based design vs concrete types
+    - Dynamic dispatch vs static dispatch
+    - Type-erased context vs typed variables
+
+================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+================================================================================
+
+Comparison:
+   EventChains with 0, 1, 3, 5, and 10 middleware layers
+   Metric: Incremental cost per middleware layer
+
+--------------------------------------------------------------------------------
+Configuration                               Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+0 middleware (baseline)                       1299.72      1089.38        0.00%
+1 middleware                                  1171.86      1072.08      +-9.84%
+3 middleware                                  1463.71      1090.44      +12.62%
+5 middleware                                  1248.93      1148.25      +-3.91%
+10 middleware                                 1355.09      1208.35       +4.26%
+
+Analysis:
+  Cost per middleware layer:
+    1 middleware:  -127.862µs per layer
+    3 middleware:  54.660µs per layer
+    5 middleware:  -10.159µs per layer
+    10 middleware: 5.537µs per layer
+
+  Scaling characteristics:
+     Linear scaling (good) - ratio: -0.04x
+
+================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with logging, timing, error handling
+   EventChains: Optimized version (4 events) with logging + timing middleware
+   Metric: Cost vs equivalent manual instrumentation
+   Note: Both process all nodes in bulk (not node-by-node)
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (logging + timing)                     1252.38      1100.44     baseline
+EventChains (logging + timing)                1342.86      1145.79       +7.22%
+
+Analysis:
+  Performance difference: +90.48µs (+7.22%)
+   EventChains provides equivalent performance for same functionality
+
+  Value proposition:
+     Consistent middleware API across all events
+     Composable and reusable instrumentation
+     No manual integration of cross-cutting concerns
+     Type-safe context passing
+
+================================================================================
+Executive Summary
+================================================================================
+
+Key Findings:
+  1. Framework Overhead (Tier 1): -21.29%
+      Pure cost of orchestration pattern
+
+  2. Abstraction Overhead (Tier 2): -39.65%
+      Cost of generic design vs hand-rolled equivalent
+
+  3. Middleware Cost (Tier 3): -10.159µs per layer
+      Incremental cost for each middleware added
+
+  4. Real-World Comparison (Tier 4): 7.22%
+      EventChains vs manual instrumentation
+
+Interpretation:
+   Tier 1 shows the minimum cost you pay for using the pattern
+   Tier 2 shows you're not paying much more than a careful manual approach
+   Tier 3 shows the cost scales linearly with middleware complexity
+   Tier 4 shows real-world cost is comparable to manual equivalent
+
+================================================================================
+
+
+=== TEST CASE: 2000 nodes, 10000 edges, 20 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 1999
+
+Running Tier 1 Benchmarks...
+  Benchmarking bare function calls... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 2 Benchmarks...
+  Benchmarking manual instrumented... 
+  Benchmarking EventChains (no middleware)... 
+
+Running Tier 3 Benchmarks...
+  Benchmarking 0 middleware... 
+  Benchmarking 1 middleware... 
+  Benchmarking 3 middleware... 
+  Benchmarking 5 middleware... 
+  Benchmarking 10 middleware... 
+
+Running Tier 4 Benchmarks...
+  Benchmarking manual (logging + timing)... 
+  Benchmarking EventChains (logging + timing)... 
+
+================================================================================
+EventChains Performance Analysis - Multi-Tier Benchmark Report
+================================================================================
+
+================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+================================================================================
+
+Comparison:
+   Baseline: 3 direct function calls (no error handling, no tracking)
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of the orchestration framework itself
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                5377.21      4141.38        0.00%
+EventChains (no middleware)                   3671.22      3129.90     +-31.73%
+
+Analysis:
+  Framework overhead: -31.73%
+  Absolute cost: -1705.99µs
+  This represents the cost of:
+    - Event wrapping and trait dispatch
+    - Context creation and type erasure
+    - Result enum wrapping
+
+================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with error handling, name tracking, context
+   EventChains: Full pattern with 0 middleware
+   Metric: Cost of abstraction vs hand-rolled equivalent
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (instrumented baseline)                3453.93      2723.62        0.00%
+EventChains (no middleware)                   2407.39      2340.46     +-30.30%
+
+Analysis:
+  Abstraction overhead: -30.30%
+  Absolute cost: -1046.54µs
+  This represents the cost of:
+    - Generic trait-based design vs concrete types
+    - Dynamic dispatch vs static dispatch
+    - Type-erased context vs typed variables
+
+================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+================================================================================
+
+Comparison:
+   EventChains with 0, 1, 3, 5, and 10 middleware layers
+   Metric: Incremental cost per middleware layer
+
+--------------------------------------------------------------------------------
+Configuration                               Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+0 middleware (baseline)                       2782.37      2607.94        0.00%
+1 middleware                                  2602.78      2423.71      +-6.45%
+3 middleware                                  2503.05      2384.58     +-10.04%
+5 middleware                                  2718.96      2474.52      +-2.28%
+10 middleware                                 2509.49      2402.56      +-9.81%
+
+Analysis:
+  Cost per middleware layer:
+    1 middleware:  -179.591µs per layer
+    3 middleware:  -93.107µs per layer
+    5 middleware:  -12.682µs per layer
+    10 middleware: -27.288µs per layer
+
+  Scaling characteristics:
+     Linear scaling (good) - ratio: 0.15x
+
+================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+================================================================================
+
+Comparison:
+   Baseline: Manual implementation with logging, timing, error handling
+   EventChains: Optimized version (4 events) with logging + timing middleware
+   Metric: Cost vs equivalent manual instrumentation
+   Note: Both process all nodes in bulk (not node-by-node)
+
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)  Median (µs)     Overhead
+--------------------------------------------------------------------------------
+Manual (logging + timing)                     2489.00      2410.71     baseline
+EventChains (logging + timing)                2803.66      2529.71      +12.64%
+
+Analysis:
+  Performance difference: +314.66µs (+12.64%)
+   EventChains has overhead, but provides:
+
+  Value proposition:
+     Consistent middleware API across all events
+     Composable and reusable instrumentation
+     No manual integration of cross-cutting concerns
+     Type-safe context passing
+
+================================================================================
+Executive Summary
+================================================================================
+
+Key Findings:
+  1. Framework Overhead (Tier 1): -31.73%
+      Pure cost of orchestration pattern
+
+  2. Abstraction Overhead (Tier 2): -30.30%
+      Cost of generic design vs hand-rolled equivalent
+
+  3. Middleware Cost (Tier 3): -12.682µs per layer
+      Incremental cost for each middleware added
+
+  4. Real-World Comparison (Tier 4): 12.64%
+      EventChains vs manual instrumentation
+
+Interpretation:
+   Tier 1 shows the minimum cost you pay for using the pattern
+   Tier 2 shows you're not paying much more than a careful manual approach
+   Tier 3 shows the cost scales linearly with middleware complexity
+   Tier 4 shows real-world cost is comparable to manual equivalent
+
+================================================================================
+
+================================================================================
+All Benchmarks Complete!
+================================================================================
+
+Process finished with exit code 0

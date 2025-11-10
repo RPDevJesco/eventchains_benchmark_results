@@ -1,0 +1,112 @@
+|------------------------------------------------------------»
+|  EventChainsCore - Advanced Performance Benchmark         |
+|  CPU Time, Cache, Branch Prediction, Memory Bandwidth     |
+|  Windows 2000/XP Compatible Version                       |
+|------------------------------------------------------------|
+
+System Information:
+----------------------------------------------------------
+  OS Version:           Microsoft Windows NT 5.1.2600 Service Pack 3
+  Processor Count:      1
+  CLR Version:          2.0.50727.42
+  Working Set:          4,296 KB
+  Is 64-bit Process:    False
+  Perf Counter Freq:    3,579,545 Hz
+  Timer Resolution:     0.279 us
+
+Warming up...
+Warmup complete.
+
+-----------------------------------------------------------
+              ADVANCED BENCHMARK SUITE                      
+-----------------------------------------------------------
+
+|---------------------------------------------------------|
+| Benchmark 1: CPU Time Analysis (Win2K/XP Compatible)    |
+|---------------------------------------------------------|
+  Running 1,000,000 iterations for accurate CPU time...
+  Total CPU Time:                  10,264,760 us
+  Kernel Time:                         70,100 us
+  User Time:                       10,194,659 us
+  Wall Clock Time:                   10384.83 ms
+  CPU Utilization:                      98.84%
+
+  Avg CPU Time/Chain:                  10.265 us
+  Avg Wall Time/Chain:                 10.385 us
+  Avg CPU Time/Event:                   3.422 us
+
+|---------------------------------------------------------|
+| Benchmark 2: Memory Bandwidth and Access Patterns       |
+|---------------------------------------------------------|
+  Total Memory Allocated:             103,940 bytes
+  Avg Memory per Chain:                     1 bytes
+  Execution Time:                    27440.85 ms
+  Memory Throughput:                     0.00 MB/s
+
+|---------------------------------------------------------|
+| Benchmark 3: Cache Efficiency (Sequential vs Random)    |
+|---------------------------------------------------------|
+  Sequential Access:                   0.1594 ms
+  Random Access:                       0.1725 ms
+  Cache Miss Penalty:                    8.23%
+  (Higher penalty indicates more cache misses)
+
+|---------------------------------------------------------|
+| Benchmark 4: Branch Prediction Impact                   |
+|---------------------------------------------------------|
+  Predictable Branches:                0.0176 ms
+  Unpredictable Branches:              0.0334 ms
+  Misprediction Penalty:                90.06%
+  (Higher penalty indicates more branch mispredictions)
+
+|---------------------------------------------------------|
+| Benchmark 5: Context Locking Overhead                   |
+|---------------------------------------------------------|
+  Total Operations:                 1,000,000
+  Total Time:                         3448.89 ms
+  Avg Time per Context:                0.0690 ms
+  Lock Overhead:                        68.98 us
+  Ops per Second:                     289,948
+
+|---------------------------------------------------------|
+| Benchmark 6: Event Switching Overhead                   |
+|---------------------------------------------------------|
+  Events | Total Time | Avg Time |  Per Event  | vs Single
+  -------Å------------Å----------Å-------------Å----------
+       1 |    70.25 ms |   0.0141 ms |    0.0141 ms | (baseline)
+       5 |   158.52 ms |   0.0317 ms |    0.0063 ms |   4.41 us
+      10 |   267.96 ms |   0.0536 ms |    0.0054 ms |   4.39 us
+      25 |   601.84 ms |   0.1204 ms |    0.0048 ms |   4.43 us
+      50 |  1175.15 ms |   0.2350 ms |    0.0047 ms |   4.51 us
+     100 |  2399.67 ms |   0.4799 ms |    0.0048 ms |   4.71 us
+
+  Note: 'vs Single' shows the incremental cost per
+        additional event beyond the first event.
+
+|---------------------------------------------------------|
+| Benchmark 7: Data Locality Impact                       |
+|---------------------------------------------------------|
+  Compact Data:                        0.0196 ms
+  Scattered Data:                      0.0201 ms
+  Locality Penalty:                      2.76%
+
+|---------------------------------------------------------|
+| Benchmark 8: Overhead vs Direct Method Calls            |
+|---------------------------------------------------------|
+  Direct Method Calls:                 0.0001 ms
+  Event Chain:                         0.0109 ms
+  Absolute Overhead:                    10.81 us
+  Relative Overhead:                 10429.01%
+
+  Analysis:
+  ---------------------------------------------------------
+  This overhead includes:
+     Chain construction and setup
+     Context object creation and locking
+     EventResult object allocations
+     Virtual method dispatch
+     Result aggregation and metrics calculation
+
+-----------------------------------------------------------
+              BENCHMARK COMPLETE                            
+-----------------------------------------------------------

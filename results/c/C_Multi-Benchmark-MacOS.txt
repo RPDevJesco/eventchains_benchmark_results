@@ -1,0 +1,109 @@
+/Users/rpdevstudios/CLionProjects/eventchain_test/cmake-build-debug/eventchain_test
+
+|--------------------------------------------------------------|
+|                                                              |
+|        EventChains Multi-Tier Benchmark Suite                |
+|         Measuring Abstraction Overhead at Scale              |
+|          (M4 iMac with 16GB of ram)                          |
+|--------------------------------------------------------------|
+
+EventChains v3.1.0 - Security-Hardened Build (No Magic Numbers)
+Features:
+  - Reference counting for memory safety
+  - Constant-time comparisons for sensitive data
+  - Memory usage limits (10 MB max)
+  - Iterative middleware execution (max 16 layers)
+  - Reentrancy protection
+  - Signal safety
+  - Function pointer validation
+  - Configurable error detail levels
+  - Overflow protection on all arithmetic
+  - Secure memory zeroing
+  - Optimized: No magic number overhead
+
+Benchmark Configuration:
+  Iterations per test: 10000
+  Timing precision: nanoseconds
+  Work per event: ~100 operations + string formatting
+
+|---------------------------------------------------------------|
+|  TIER 1: Minimal Baseline (Cost of Orchestration Framework)  |
+|---------------------------------------------------------------|
+
+Baseline: 3 bare function calls
+EventChains: Full pattern with 0 middleware
+Iterations: 10000
+
+Results:
+----------------------------------------------------------------
+Baseline (3 function calls)        : avg=  0.308 us  min=  0.250 us  max=  0.834 us  stddev= 0.026 us
+EventChains (0 middleware)         : avg=  0.455 us  min=  0.375 us  max=  2.083 us  stddev= 0.030 us
+
+EventChains Overhead               :  +47.73% ( +0.147 us overhead)
+
+|---------------------------------------------------------------|
+|   TIER 2: Feature-Parity (Cost of Abstraction vs Manual)     |
+|---------------------------------------------------------------|
+
+Baseline: Manual error handling + name tracking + cleanup
+EventChains: Full pattern with 0 middleware
+Iterations: 10000
+
+Results:
+----------------------------------------------------------------
+Baseline (manual equivalent)       : avg=  0.340 us  min=  0.291 us  max= 11.666 us  stddev= 0.114 us
+EventChains (0 middleware)         : avg=  0.420 us  min=  0.333 us  max=  0.833 us  stddev= 0.021 us
+
+EventChains Overhead               :  +23.53% ( +0.080 us overhead)
+
+|---------------------------------------------------------------|
+|      TIER 3: Middleware Scaling (Cost per Middleware)        |
+|---------------------------------------------------------------|
+
+EventChains: 0, 1, 3, 5, 10 middleware layers
+Iterations: 10000 per configuration
+
+Results:
+----------------------------------------------------------------
+0 middleware layers                : avg=  0.431 us  min=  0.333 us  max= 11.125 us  stddev= 0.132 us
+1 middleware layer                 : avg=  0.525 us  min=  0.417 us  max=  6.916 us  stddev= 0.089 us
+3 middleware layers                : avg=  0.564 us  min=  0.458 us  max= 21.083 us  stddev= 0.351 us
+5 middleware layers                : avg=  0.566 us  min=  0.458 us  max=  7.250 us  stddev= 0.076 us
+10 middleware layers               : avg=  0.613 us  min=  0.541 us  max=  6.208 us  stddev= 0.064 us
+
+Overhead Analysis:
+----------------------------------------------------------------
+0 -> 1 middleware:  +0.094 us total, 0.094 us per layer
+1 -> 3 middleware:  +0.039 us total, 0.019 us per layer
+3 -> 5 middleware:  +0.002 us total, 0.001 us per layer
+5 -> 10 middleware:  +0.047 us total, 0.009 us per layer
+
+Amortized cost per middleware layer: 0.018 us
+
+|---------------------------------------------------------------|
+|  TIER 4: Real-World (Cost vs Manual Instrumentation)         |
+|---------------------------------------------------------------|
+
+Baseline: Manual logging + timing implementation
+EventChains: Logging + timing middleware
+Iterations: 10000
+
+Results:
+----------------------------------------------------------------
+Baseline (manual instrumentation)  : avg=  0.304 us  min=  0.250 us  max=  0.500 us  stddev= 0.021 us
+EventChains (middleware-based)     : avg=  0.512 us  min=  0.458 us  max=  2.042 us  stddev= 0.029 us
+
+EventChains Overhead               :  +68.42% ( +0.208 us overhead)
+
+|---------------------------------------------------------------|
+|                     Benchmark Complete                       |
+|---------------------------------------------------------------|
+
+Key Findings:
+  Tier 1 shows raw orchestration framework overhead
+  Tier 2 shows abstraction cost vs feature-equivalent manual code
+  Tier 3 quantifies cost per middleware layer (amortized)
+  Tier 4 demonstrates real-world instrumentation scenarios
+
+
+Process finished with exit code 0

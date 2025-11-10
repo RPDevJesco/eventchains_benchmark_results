@@ -1,0 +1,652 @@
+PS C:\Users\jglov\RustroverProjects\dijkstra_eventchains> docker-compose up perf     
+[+] Running 1/1
+ ✔ Container eventchains-perf  Created                                                                                                                                                                                                                                                                         0.0s 
+Attaching to eventchains-perf
+eventchains-perf  | ================================================================================
+eventchains-perf  | EventChains Multi-Tier Performance Benchmark (Docker, Linux on Windows Machine)
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | 
+eventchains-perf  | === TEST CASE: 100 nodes, 500 edges, 100 runs ===
+eventchains-perf  | 
+eventchains-perf  | Graph generated successfully!
+eventchains-perf  |   Source node: 0
+eventchains-perf  |   Target node: 99
+eventchains-perf  | 
+eventchains-perf  | Running Tier 1 Benchmarks...
+eventchains-perf  |   Benchmarking bare function calls... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 2 Benchmarks...
+eventchains-perf  |   Benchmarking manual instrumented... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 3 Benchmarks...
+eventchains-perf  |   Benchmarking 0 middleware... 
+eventchains-perf  |   Benchmarking 1 middleware... 
+eventchains-perf  |   Benchmarking 3 middleware... 
+eventchains-perf  |   Benchmarking 5 middleware... 
+eventchains-perf  |   Benchmarking 10 middleware... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 4 Benchmarks...
+eventchains-perf  |   Benchmarking manual (logging + timing)... 
+eventchains-perf  |   Benchmarking EventChains (logging + timing)... 
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | EventChains Performance Analysis - Multi-Tier Benchmark Report
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 1: Minimal Baseline - Cost of Orchestration Framework
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: 3 direct function calls (no error handling, no tracking)
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of the orchestration framework itself
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf exited with code 0                                                                                                                                                                                                                                                                                 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Bare Function Calls (baseline)                   5.28         4.64        0.00%
+eventchains-perf  | EventChains (no middleware)                      5.41         5.13       +2.54%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Framework overhead: 2.54%
+eventchains-perf  |   Absolute cost: 0.13µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Event wrapping and trait dispatch
+eventchains-perf  |     - Context creation and type erasure
+eventchains-perf  |     - Result enum wrapping
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 2: Feature-Parity Baseline - Cost of Abstraction
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with error handling, name tracking, context
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of abstraction vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (instrumented baseline)                   6.42         5.83        0.00%
+eventchains-perf  | EventChains (no middleware)                      5.43         5.18     +-15.45%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Abstraction overhead: -15.45%
+eventchains-perf  |   Absolute cost: -0.99µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Generic trait-based design vs concrete types
+eventchains-perf  |     - Dynamic dispatch vs static dispatch
+eventchains-perf  |     - Type-erased context vs typed variables
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 3: Middleware Scaling - Cost per Middleware Layer
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    EventChains with 0, 1, 3, 5, and 10 middleware layers
+eventchains-perf  |    Metric: Incremental cost per middleware layer
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Configuration                               Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | 0 middleware (baseline)                          6.69         6.83        0.00%
+eventchains-perf  | 1 middleware                                     6.41         5.97      +-4.17%
+eventchains-perf  | 3 middleware                                     7.28         7.12       +8.74%
+eventchains-perf  | 5 middleware                                     8.43         7.54      +26.01%
+eventchains-perf  | 10 middleware                                    8.88         8.81      +32.69%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Cost per middleware layer:
+eventchains-perf  |     1 middleware:  -0.279µs per layer
+eventchains-perf  |     3 middleware:  0.195µs per layer
+eventchains-perf  |     5 middleware:  0.348µs per layer
+eventchains-perf  |     10 middleware: 0.219µs per layer
+eventchains-perf  | 
+eventchains-perf  |   Scaling characteristics:
+eventchains-perf  |      Linear scaling (good) - ratio: -0.78x
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with logging, timing, error handling
+eventchains-perf  |    EventChains: Optimized version (4 events) with logging + timing middleware
+eventchains-perf  |    Metric: Cost vs equivalent manual instrumentation
+eventchains-perf  |    Note: Both process all nodes in bulk (not node-by-node)
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (logging + timing)                        5.23         4.90     baseline
+eventchains-perf  | EventChains (logging + timing)                   6.18         5.99      +18.11%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Performance difference: +0.95µs (+18.11%)
+eventchains-perf  |    EventChains has overhead, but provides:
+eventchains-perf  | 
+eventchains-perf  |   Value proposition:
+eventchains-perf  |      Consistent middleware API across all events
+eventchains-perf  |      Composable and reusable instrumentation
+eventchains-perf  |      No manual integration of cross-cutting concerns
+eventchains-perf  |      Type-safe context passing
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | Executive Summary
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Key Findings:
+eventchains-perf  |   1. Framework Overhead (Tier 1): 2.54%
+eventchains-perf  |       Pure cost of orchestration pattern
+eventchains-perf  | 
+eventchains-perf  |   2. Abstraction Overhead (Tier 2): -15.45%
+eventchains-perf  |       Cost of generic design vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  |   3. Middleware Cost (Tier 3): 0.348µs per layer
+eventchains-perf  |       Incremental cost for each middleware added
+eventchains-perf  | 
+eventchains-perf  |   4. Real-World Comparison (Tier 4): 18.11%
+eventchains-perf  |       EventChains vs manual instrumentation
+eventchains-perf  | 
+eventchains-perf  | Interpretation:
+eventchains-perf  |    Tier 1 shows the minimum cost you pay for using the pattern
+eventchains-perf  |    Tier 2 shows you're not paying much more than a careful manual approach
+eventchains-perf  |    Tier 3 shows the cost scales linearly with middleware complexity
+eventchains-perf  |    Tier 4 shows real-world cost is comparable to manual equivalent
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | 
+eventchains-perf  | === TEST CASE: 500 nodes, 2500 edges, 50 runs ===
+eventchains-perf  | 
+eventchains-perf  | Graph generated successfully!
+eventchains-perf  |   Source node: 0
+eventchains-perf  |   Target node: 499
+eventchains-perf  | 
+eventchains-perf  | Running Tier 1 Benchmarks...
+eventchains-perf  |   Benchmarking bare function calls... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 2 Benchmarks...
+eventchains-perf  |   Benchmarking manual instrumented... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 3 Benchmarks...
+eventchains-perf  |   Benchmarking 0 middleware... 
+eventchains-perf  |   Benchmarking 1 middleware... 
+eventchains-perf  |   Benchmarking 3 middleware... 
+eventchains-perf  |   Benchmarking 5 middleware... 
+eventchains-perf  |   Benchmarking 10 middleware... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 4 Benchmarks...
+eventchains-perf  |   Benchmarking manual (logging + timing)... 
+eventchains-perf  |   Benchmarking EventChains (logging + timing)... 
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | EventChains Performance Analysis - Multi-Tier Benchmark Report
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 1: Minimal Baseline - Cost of Orchestration Framework
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: 3 direct function calls (no error handling, no tracking)
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of the orchestration framework itself
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Bare Function Calls (baseline)                  34.52        30.57        0.00%
+eventchains-perf  | EventChains (no middleware)                     62.11        41.44      +79.94%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Framework overhead: 79.94%
+eventchains-perf  |   Absolute cost: 27.59µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Event wrapping and trait dispatch
+eventchains-perf  |     - Context creation and type erasure
+eventchains-perf  |     - Result enum wrapping
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 2: Feature-Parity Baseline - Cost of Abstraction
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with error handling, name tracking, context
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of abstraction vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (instrumented baseline)                  50.09        38.51        0.00%
+eventchains-perf  | EventChains (no middleware)                     33.81        31.11     +-32.49%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Abstraction overhead: -32.49%
+eventchains-perf  |   Absolute cost: -16.27µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Generic trait-based design vs concrete types
+eventchains-perf  |     - Dynamic dispatch vs static dispatch
+eventchains-perf  |     - Type-erased context vs typed variables
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 3: Middleware Scaling - Cost per Middleware Layer
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    EventChains with 0, 1, 3, 5, and 10 middleware layers
+eventchains-perf  |    Metric: Incremental cost per middleware layer
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Configuration                               Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | 0 middleware (baseline)                         32.95        30.96        0.00%
+eventchains-perf  | 1 middleware                                    33.35        31.50       +1.21%
+eventchains-perf  | 3 middleware                                    34.22        31.99       +3.83%
+eventchains-perf  | 5 middleware                                    32.54        32.50      +-1.27%
+eventchains-perf  | 10 middleware                                   37.33        34.35      +13.28%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Cost per middleware layer:
+eventchains-perf  |     1 middleware:  0.400µs per layer
+eventchains-perf  |     3 middleware:  0.421µs per layer
+eventchains-perf  |     5 middleware:  -0.083µs per layer
+eventchains-perf  |     10 middleware: 0.438µs per layer
+eventchains-perf  | 
+eventchains-perf  |   Scaling characteristics:
+eventchains-perf  |      Linear scaling (good) - ratio: 1.09x
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with logging, timing, error handling
+eventchains-perf  |    EventChains: Optimized version (4 events) with logging + timing middleware
+eventchains-perf  |    Metric: Cost vs equivalent manual instrumentation
+eventchains-perf  |    Note: Both process all nodes in bulk (not node-by-node)
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (logging + timing)                       31.63        30.26     baseline
+eventchains-perf  | EventChains (logging + timing)                  31.92        31.57       +0.90%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Performance difference: +0.28µs (+0.90%)
+eventchains-perf  |    EventChains provides equivalent performance for same functionality
+eventchains-perf  | 
+eventchains-perf  |   Value proposition:
+eventchains-perf  |      Consistent middleware API across all events
+eventchains-perf  |      Composable and reusable instrumentation
+eventchains-perf  |      No manual integration of cross-cutting concerns
+eventchains-perf  |      Type-safe context passing
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | Executive Summary
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Key Findings:
+eventchains-perf  |   1. Framework Overhead (Tier 1): 79.94%
+eventchains-perf  |       Pure cost of orchestration pattern
+eventchains-perf  | 
+eventchains-perf  |   2. Abstraction Overhead (Tier 2): -32.49%
+eventchains-perf  |       Cost of generic design vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  |   3. Middleware Cost (Tier 3): -0.083µs per layer
+eventchains-perf  |       Incremental cost for each middleware added
+eventchains-perf  | 
+eventchains-perf  |   4. Real-World Comparison (Tier 4): 0.90%
+eventchains-perf  |       EventChains vs manual instrumentation
+eventchains-perf  | 
+eventchains-perf  | Interpretation:
+eventchains-perf  |    Tier 1 shows the minimum cost you pay for using the pattern
+eventchains-perf  |    Tier 2 shows you're not paying much more than a careful manual approach
+eventchains-perf  |    Tier 3 shows the cost scales linearly with middleware complexity
+eventchains-perf  |    Tier 4 shows real-world cost is comparable to manual equivalent
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | 
+eventchains-perf  | === TEST CASE: 1000 nodes, 5000 edges, 30 runs ===
+eventchains-perf  | 
+eventchains-perf  | Graph generated successfully!
+eventchains-perf  |   Source node: 0
+eventchains-perf  |   Target node: 999
+eventchains-perf  | 
+eventchains-perf  | Running Tier 1 Benchmarks...
+eventchains-perf  |   Benchmarking bare function calls... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 2 Benchmarks...
+eventchains-perf  |   Benchmarking manual instrumented... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 3 Benchmarks...
+eventchains-perf  |   Benchmarking 0 middleware... 
+eventchains-perf  |   Benchmarking 1 middleware... 
+eventchains-perf  |   Benchmarking 3 middleware... 
+eventchains-perf  |   Benchmarking 5 middleware... 
+eventchains-perf  |   Benchmarking 10 middleware... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 4 Benchmarks...
+eventchains-perf  |   Benchmarking manual (logging + timing)... 
+eventchains-perf  |   Benchmarking EventChains (logging + timing)... 
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | EventChains Performance Analysis - Multi-Tier Benchmark Report
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 1: Minimal Baseline - Cost of Orchestration Framework
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: 3 direct function calls (no error handling, no tracking)
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of the orchestration framework itself
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Bare Function Calls (baseline)                  72.60        66.45        0.00%
+eventchains-perf  | EventChains (no middleware)                     89.37        75.59      +23.10%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Framework overhead: 23.10%
+eventchains-perf  |   Absolute cost: 16.77µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Event wrapping and trait dispatch
+eventchains-perf  |     - Context creation and type erasure
+eventchains-perf  |     - Result enum wrapping
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 2: Feature-Parity Baseline - Cost of Abstraction
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with error handling, name tracking, context
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of abstraction vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (instrumented baseline)                  77.78        68.94        0.00%
+eventchains-perf  | EventChains (no middleware)                     84.97        71.79       +9.25%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Abstraction overhead: 9.25%
+eventchains-perf  |   Absolute cost: 7.19µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Generic trait-based design vs concrete types
+eventchains-perf  |     - Dynamic dispatch vs static dispatch
+eventchains-perf  |     - Type-erased context vs typed variables
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 3: Middleware Scaling - Cost per Middleware Layer
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    EventChains with 0, 1, 3, 5, and 10 middleware layers
+eventchains-perf  |    Metric: Incremental cost per middleware layer
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Configuration                               Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | 0 middleware (baseline)                         79.70        68.65        0.00%
+eventchains-perf  | 1 middleware                                    76.26        69.96      +-4.31%
+eventchains-perf  | 3 middleware                                   105.95        80.82      +32.94%
+eventchains-perf  | 5 middleware                                    73.97        70.09      +-7.18%
+eventchains-perf  | 10 middleware                                   73.48        72.70      +-7.80%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Cost per middleware layer:
+eventchains-perf  |     1 middleware:  -3.438µs per layer
+eventchains-perf  |     3 middleware:  8.750µs per layer
+eventchains-perf  |     5 middleware:  -1.145µs per layer
+eventchains-perf  |     10 middleware: -0.621µs per layer
+eventchains-perf  | 
+eventchains-perf  |   Scaling characteristics:
+eventchains-perf  |      Linear scaling (good) - ratio: 0.18x
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with logging, timing, error handling
+eventchains-perf  |    EventChains: Optimized version (4 events) with logging + timing middleware
+eventchains-perf  |    Metric: Cost vs equivalent manual instrumentation
+eventchains-perf  |    Note: Both process all nodes in bulk (not node-by-node)
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (logging + timing)                       72.86        67.10     baseline
+eventchains-perf  | EventChains (logging + timing)                  72.18        68.84       -0.93%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Performance difference: -0.67µs (-0.93%)
+eventchains-perf  |    EventChains provides equivalent performance for same functionality
+eventchains-perf  | 
+eventchains-perf  |   Value proposition:
+eventchains-perf  |      Consistent middleware API across all events
+eventchains-perf  |      Composable and reusable instrumentation
+eventchains-perf  |      No manual integration of cross-cutting concerns
+eventchains-perf  |      Type-safe context passing
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | Executive Summary
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Key Findings:
+eventchains-perf  |   1. Framework Overhead (Tier 1): 23.10%
+eventchains-perf  |       Pure cost of orchestration pattern
+eventchains-perf  | 
+eventchains-perf  |   2. Abstraction Overhead (Tier 2): 9.25%
+eventchains-perf  |       Cost of generic design vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  |   3. Middleware Cost (Tier 3): -1.145µs per layer
+eventchains-perf  |       Incremental cost for each middleware added
+eventchains-perf  | 
+eventchains-perf  |   4. Real-World Comparison (Tier 4): -0.93%
+eventchains-perf  |       EventChains vs manual instrumentation
+eventchains-perf  | 
+eventchains-perf  | Interpretation:
+eventchains-perf  |    Tier 1 shows the minimum cost you pay for using the pattern
+eventchains-perf  |    Tier 2 shows you're not paying much more than a careful manual approach
+eventchains-perf  |    Tier 3 shows the cost scales linearly with middleware complexity
+eventchains-perf  |    Tier 4 shows real-world cost is comparable to manual equivalent
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | 
+eventchains-perf  | === TEST CASE: 2000 nodes, 10000 edges, 20 runs ===
+eventchains-perf  | 
+eventchains-perf  | Graph generated successfully!
+eventchains-perf  |   Source node: 0
+eventchains-perf  |   Target node: 1999
+eventchains-perf  | 
+eventchains-perf  | Running Tier 1 Benchmarks...
+eventchains-perf  |   Benchmarking bare function calls... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 2 Benchmarks...
+eventchains-perf  |   Benchmarking manual instrumented... 
+eventchains-perf  |   Benchmarking EventChains (no middleware)... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 3 Benchmarks...
+eventchains-perf  |   Benchmarking 0 middleware... 
+eventchains-perf  |   Benchmarking 1 middleware... 
+eventchains-perf  |   Benchmarking 3 middleware... 
+eventchains-perf  |   Benchmarking 5 middleware... 
+eventchains-perf  |   Benchmarking 10 middleware... 
+eventchains-perf  | 
+eventchains-perf  | Running Tier 4 Benchmarks...
+eventchains-perf  |   Benchmarking manual (logging + timing)... 
+eventchains-perf  |   Benchmarking EventChains (logging + timing)... 
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | EventChains Performance Analysis - Multi-Tier Benchmark Report
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 1: Minimal Baseline - Cost of Orchestration Framework
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: 3 direct function calls (no error handling, no tracking)
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of the orchestration framework itself
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Bare Function Calls (baseline)                 197.51       180.39        0.00%
+eventchains-perf  | EventChains (no middleware)                    195.28       168.15      +-1.13%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Framework overhead: -1.13%
+eventchains-perf  |   Absolute cost: -2.23µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Event wrapping and trait dispatch
+eventchains-perf  |     - Context creation and type erasure
+eventchains-perf  |     - Result enum wrapping
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 2: Feature-Parity Baseline - Cost of Abstraction
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with error handling, name tracking, context
+eventchains-perf  |    EventChains: Full pattern with 0 middleware
+eventchains-perf  |    Metric: Cost of abstraction vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (instrumented baseline)                 193.54       176.97        0.00%
+eventchains-perf  | EventChains (no middleware)                    188.20       170.62      +-2.76%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Abstraction overhead: -2.76%
+eventchains-perf  |   Absolute cost: -5.34µs
+eventchains-perf  |   This represents the cost of:
+eventchains-perf  |     - Generic trait-based design vs concrete types
+eventchains-perf  |     - Dynamic dispatch vs static dispatch
+eventchains-perf  |     - Type-erased context vs typed variables
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 3: Middleware Scaling - Cost per Middleware Layer
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    EventChains with 0, 1, 3, 5, and 10 middleware layers
+eventchains-perf  |    Metric: Incremental cost per middleware layer
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Configuration                               Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | 0 middleware (baseline)                        174.43       165.85        0.00%
+eventchains-perf  | 1 middleware                                   173.47       167.75      +-0.55%
+eventchains-perf  | 3 middleware                                   170.56       166.60      +-2.22%
+eventchains-perf  | 5 middleware                                   174.89       169.29       +0.26%
+eventchains-perf  | 10 middleware                                  174.19       169.37      +-0.14%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Cost per middleware layer:
+eventchains-perf  |     1 middleware:  -0.955µs per layer
+eventchains-perf  |     3 middleware:  -1.289µs per layer
+eventchains-perf  |     5 middleware:  0.092µs per layer
+eventchains-perf  |     10 middleware: -0.024µs per layer
+eventchains-perf  | 
+eventchains-perf  |   Scaling characteristics:
+eventchains-perf  |      Linear scaling (good) - ratio: 0.02x
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | TIER 4: Real-World Scenario - Cost vs Equivalent Manual Instrumentation
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Comparison:
+eventchains-perf  |    Baseline: Manual implementation with logging, timing, error handling
+eventchains-perf  |    EventChains: Optimized version (4 events) with logging + timing middleware
+eventchains-perf  |    Metric: Cost vs equivalent manual instrumentation
+eventchains-perf  |    Note: Both process all nodes in bulk (not node-by-node)
+eventchains-perf  | 
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Implementation                              Mean (µs)  Median (µs)     Overhead
+eventchains-perf  | --------------------------------------------------------------------------------
+eventchains-perf  | Manual (logging + timing)                      191.04       173.47     baseline
+eventchains-perf  | EventChains (logging + timing)                 183.37       173.38       -4.01%
+eventchains-perf  | 
+eventchains-perf  | Analysis:
+eventchains-perf  |   Performance difference: -7.67µs (-4.01%)
+eventchains-perf  |    EventChains provides equivalent performance for same functionality
+eventchains-perf  | 
+eventchains-perf  |   Value proposition:
+eventchains-perf  |      Consistent middleware API across all events
+eventchains-perf  |      Composable and reusable instrumentation
+eventchains-perf  |      No manual integration of cross-cutting concerns
+eventchains-perf  |      Type-safe context passing
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | Executive Summary
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | Key Findings:
+eventchains-perf  |   1. Framework Overhead (Tier 1): -1.13%
+eventchains-perf  |       Pure cost of orchestration pattern
+eventchains-perf  | 
+eventchains-perf  |   2. Abstraction Overhead (Tier 2): -2.76%
+eventchains-perf  |       Cost of generic design vs hand-rolled equivalent
+eventchains-perf  | 
+eventchains-perf  |   3. Middleware Cost (Tier 3): 0.092µs per layer
+eventchains-perf  |       Incremental cost for each middleware added
+eventchains-perf  | 
+eventchains-perf  |   4. Real-World Comparison (Tier 4): -4.01%
+eventchains-perf  |       EventChains vs manual instrumentation
+eventchains-perf  | 
+eventchains-perf  | Interpretation:
+eventchains-perf  |    Tier 1 shows the minimum cost you pay for using the pattern
+eventchains-perf  |    Tier 2 shows you're not paying much more than a careful manual approach
+eventchains-perf  |    Tier 3 shows the cost scales linearly with middleware complexity
+eventchains-perf  |    Tier 4 shows real-world cost is comparable to manual equivalent
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  | ================================================================================
+eventchains-perf  | All Benchmarks Complete!
+eventchains-perf  | ================================================================================
+eventchains-perf  | 
+eventchains-perf  |  Performance counter stats for './dijkstra_eventchains':
+eventchains-perf  | 
+eventchains-perf  |              99.01 msec task-clock:u                     #    0.994 CPUs utilized          
+eventchains-perf  |                  0      context-switches:u               #    0.000 /sec                   
+eventchains-perf  |                  0      cpu-migrations:u                 #    0.000 /sec                   
+eventchains-perf  |                368      page-faults:u                    #    3.717 K/sec                  
+eventchains-perf  |          455330793      cycles:u                         #    4.599 GHz                      (83.83%)
+eventchains-perf  |           14774082      stalled-cycles-frontend:u        #    3.24% frontend cycles idle     (83.80%)
+eventchains-perf  |         1145461196      instructions:u                   #    2.52  insn per cycle         
+eventchains-perf  |                                                   #    0.01  stalled cycles per insn  (83.90%)
+eventchains-perf  |          117116072      branches:u                       #    1.183 G/sec                    (86.93%)
+eventchains-perf  |            1234936      branch-misses:u                  #    1.05% of all branches          (87.88%)
+eventchains-perf  |          327347490      L1-dcache-loads:u                #    3.306 G/sec                    (87.92%)
+eventchains-perf  |           14939549      L1-dcache-load-misses:u          #    4.56% of all L1-dcache accesses  (85.75%)
+eventchains-perf  |    <not supported>      LLC-loads:u                                                 
+eventchains-perf  |    <not supported>      LLC-load-misses:u                                           
+eventchains-perf  | 
+eventchains-perf  |        0.099621841 seconds time elapsed
+eventchains-perf  | 
+eventchains-perf  |        0.094765000 seconds user
+eventchains-perf  |        0.003948000 seconds sys
+eventchains-perf  | 
+eventchains-perf  | 
