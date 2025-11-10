@@ -1,0 +1,63 @@
+Box64 arm64 v0.3.9 7fec3550 with Dynarec built on Nov 11 2025 00:11:10
+Dynarec for ARM64, with extension: ASIMD AES CRC32 PMULL ATOMICS SHA1 SHA2
+Running on Cortex-A76 with 4 cores, pagesize: 16384
+Will use hardware counter measured at 54.0 MHz emulating 3.4 GHz
+Detected 48bits at least of address space
+Counted 59 Env var
+Library search path: 
+Binary search path: ./:bin/:/usr/local/sbin/:/usr/local/bin/:/usr/sbin/:/usr/bin/:/sbin/:/bin/:/usr/local/games/:/usr/games/
+Looking for eventchain_test_optimized
+Rename process to "eventchain_test_optimized"
+Using native(wrapped) libm.so.6
+Using native(wrapped) libc.so.6
+Using native(wrapped) ld-linux-x86-64.so.2
+Using native(wrapped) libpthread.so.0
+Using native(wrapped) libdl.so.2
+Using native(wrapped) libutil.so.1
+Using native(wrapped) libresolv.so.2
+Using native(wrapped) librt.so.1
+Using native(wrapped) libbsd.so.0
+
+|---------------------------------------------------------------|
+|                                                               |
+|        EventChains Multi-Tier Benchmark Suite                |
+|         Measuring Abstraction Overhead at Scale              |
+|                                                               |
+|---------------------------------------------------------------|
+
+EventChains v3.1.0 - Security-Hardened Build (No Magic Numbers)
+Features:
+  - Reference counting for memory safety
+  - Constant-time comparisons for sensitive data
+  - Memory usage limits (10 MB max)
+  - Iterative middleware execution (max 16 layers)
+  - Reentrancy protection
+  - Signal safety
+  - Function pointer validation
+  - Configurable error detail levels
+  - Overflow protection on all arithmetic
+  - Secure memory zeroing
+  - Optimized: No magic number overhead
+
+Benchmark Configuration:
+  Iterations per test: 10000
+  Timing precision: nanoseconds
+  Work per event: ~100 operations + string formatting
+
+|---------------------------------------------------------------|
+|  TIER 1: Minimal Baseline (Cost of Orchestration Framework)  |
+|---------------------------------------------------------------|
+
+Baseline: 3 bare function calls
+EventChains: Full pattern with 0 middleware
+Iterations: 10000
+
+3903|SIGILL @0x7ffef2422818 (???(0x7ffef2422818)) (x64pc=0x100002f3e/"/home/coburn/Dev/JescoStuff/linux/eventchain_test_optimized + 0x2f3e", rsp=0x7ffef306ebc0, stack=0x7ffef2870000:0x7ffef3070000 own=(nil) fp=0x7ffef306ec90), for accessing 0x7ffef2422818 (code=1/prot=7), db=0x7ffef242285b(0x7ffef2422818:0x7ffef24228f3/0x100002f3e:0x100002f40//home/coburn/Dev/JescoStuff/linux/eventchain_test_optimized + 0x2f3e:clean, hash:4789a15/4789a15) handler=(nil)
+RAX:0x0000000000000000 RCX:0x00ffffffffffffff RDX:0x00007ffef306ebd0 RBX:0x00000000000003e5 
+RSP:0x00007ffef306ebc0 RBP:0x00007ffef306ec90 RSI:0x00007ffef32ce120 RDI:0x0000000000000001 
+ R8:0x0000000100008ba0  R9:0x0000000000000003 R10:0x0000000000000000 R11:0x0000000000000000 
+R12:0x00007ffef306ebd0 R13:0x00000001000082a8 R14:0x0000000000000000 R15:0x00007ffef306ebe4 
+ES:0x002b CS:0x0033 SS:0x002b DS:0x002b FS:0x0000 GS:0x0000 FSBASE=0x6c4cd4b0 GSBASE=(nil)
+RSP-0x20:0x0000000000000000 RSP-0x18:0x0000000000000000 RSP-0x10:0x0000000000000000 RSP-0x08:0x0000000100002f3e
+RSP+0x00:0x0000000000000000 RSP+0x08:0x0000000000000000 RSP+0x10:0x00000000000008ef RSP+0x18:0x000000001d44ab71 opcode=00 00 00 00 62 00 00 58 (62 F2 7D 48 58)
+Illegal instruction
