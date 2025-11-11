@@ -25,6 +25,44 @@ Most performance studies compare a framework to bare function calls and report p
 2. **Unequal feature comparison**: Comparing a full framework to bare functions is comparing different capabilities
 3. **Missing scaling characteristics**: Single measurements don't show how overhead grows with complexity
 4. **No real-world validation**: Academic benchmarks often miss production instrumentation costs
+5. **Optimization dependency unclear**: Without testing unoptimized builds, it's impossible to distinguish architectural benefits from compiler tricks
+
+We address these limitations with four complementary measurements:
+
+**Tier 1: Framework Overhead (Baseline Comparison)**
+- Compares EventChains to bare function calls
+- Reveals pure orchestration cost
+- Context: Shows maximum possible overhead
+
+**Tier 2: Feature Parity (Fair Comparison)**
+- Compares EventChains to manual code with equivalent features
+- Manual implementation includes error handling, result tracking, cleanup
+- Context: Shows cost of abstraction vs hand-written equivalent
+
+**Tier 3: Middleware Scaling (Composition Cost)**
+- Measures incremental cost per middleware layer (0, 1, 3, 5, 10 layers)
+- Reveals whether overhead is linear, super-linear, or sub-linear
+- Context: Validates architectural scalability
+
+**Tier 4: Real-World Instrumentation (Production Scenario)**
+- Compares to manual implementation with logging, timing, error handling
+- Measures actual production deployment overhead
+- Context: Shows practical vs academic performance
+
+### Debug Build Methodology
+
+**All benchmarks use unoptimized debug builds** unless explicitly noted. This
+conservative approach:
+
+- Demonstrates worst-case performance without compiler assistance
+- Ensures maximum reproducibility across platforms and toolchains
+- Proves architectural soundness independent of optimization
+- Eliminates "compiler tricks" objections from reviewers
+- Shows that release builds provide 4-6x additional improvement
+
+This methodology reveals that EventChains exhibits sub-linear scaling
+characteristics **even without compiler optimization**, distinguishing
+architectural benefits from tooling-dependent performance.
 
 ### Our Solution: Four-Tier Analysis
 

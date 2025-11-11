@@ -1,0 +1,665 @@
+sers/jglov/RiderProjects/EventChains_CS_New/EventChainBenchmark/bin/Debug/net9.0/EventChainBenchmark.exe
+
+|==============================================================================|
+|                                                                              |
+|              EventChains Multi-Tier Scaling Benchmark                        |
+|                   Testing Performance at Scale                               |
+|                  .NET 2.0 / Windows 2000+ Compatible                         |
+|                                                                              |
+|==============================================================================|
+
+
+System Information:
+--------------------------------------------------------------------------------
+  OS Version:           Microsoft Windows NT 10.0.26200.0
+  Processor Count:      32
+  CLR Version:          9.0.9
+  Working Set:          25,848 KB
+  Is 64-bit Process:    True
+  Perf Counter Freq:    10,000,000 Hz
+  Timer Resolution:     0.100 µs
+  Work per Event:       100 operations
+
+Warming up JIT compiler...
+Warmup complete.
+
+
+==============================================================================
+  TEST SCALE: 10 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                    4.79        0.00%
+EventChains (no middleware)                      11.69       144.33%
+
+Analysis:
+  Framework overhead: 144.33%
+  Absolute cost: 6.91µs (0.69µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                      3.73        0.00%
+EventChains (no middleware)                      13.51       261.75%
+
+Analysis:
+  Abstraction overhead: 261.75%
+  Absolute cost: 9.77µs (0.98µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers               14.50     (baseline)       -
+ 1 middleware layers               13.19       -9.01%      -1.31µs
+ 3 middleware layers               17.82       22.91%       1.11µs
+ 5 middleware layers               19.91       37.34%       1.08µs
+10 middleware layers               31.27      115.68%       1.68µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                           6.49        0.00%
+EventChains (logging+timing middleware)          14.97       130.61%
+
+Analysis:
+  Real-world overhead: 130.61%
+  Absolute cost: 8.48µs (0.85µs per event)
+
+  Trade-off analysis:
+     Manual: ~150 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 80%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+  TEST SCALE: 50 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                   14.02        0.00%
+EventChains (no middleware)                      66.79       376.46%
+
+Analysis:
+  Framework overhead: 376.46%
+  Absolute cost: 52.77µs (1.06µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                     16.59        0.00%
+EventChains (no middleware)                      59.57       259.02%
+
+Analysis:
+  Abstraction overhead: 259.02%
+  Absolute cost: 42.97µs (0.86µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers               62.20     (baseline)       -
+ 1 middleware layers               68.67       10.40%       6.47µs
+ 3 middleware layers               84.23       35.41%       7.34µs
+ 5 middleware layers              103.00       65.58%       8.16µs
+10 middleware layers              157.80      153.69%       9.56µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                          32.90        0.00%
+EventChains (logging+timing middleware)          65.33        98.57%
+
+Analysis:
+  Real-world overhead: 98.57%
+  Absolute cost: 32.43µs (0.65µs per event)
+
+  Trade-off analysis:
+     Manual: ~750 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 96%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+  TEST SCALE: 100 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                   28.01        0.00%
+EventChains (no middleware)                     116.95       317.46%
+
+Analysis:
+  Framework overhead: 317.46%
+  Absolute cost: 88.93µs (0.89µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                     31.81        0.00%
+EventChains (no middleware)                     114.76       260.73%
+
+Analysis:
+  Abstraction overhead: 260.73%
+  Absolute cost: 82.95µs (0.83µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers              118.09     (baseline)       -
+ 1 middleware layers              132.55       12.25%      14.46µs
+ 3 middleware layers              168.21       42.44%      16.71µs
+ 5 middleware layers              199.98       69.34%      16.38µs
+10 middleware layers              291.50      146.84%      17.34µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                          53.50        0.00%
+EventChains (logging+timing middleware)         129.34       141.76%
+
+Analysis:
+  Real-world overhead: 141.76%
+  Absolute cost: 75.84µs (0.76µs per event)
+
+  Trade-off analysis:
+     Manual: ~1500 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 98%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+  TEST SCALE: 250 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                   69.12        0.00%
+EventChains (no middleware)                     324.24       369.08%
+
+Analysis:
+  Framework overhead: 369.08%
+  Absolute cost: 255.12µs (1.02µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                     80.48        0.00%
+EventChains (no middleware)                     309.40       284.43%
+
+Analysis:
+  Abstraction overhead: 284.43%
+  Absolute cost: 228.92µs (0.92µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers              312.23     (baseline)       -
+ 1 middleware layers              355.18       13.76%      42.95µs
+ 3 middleware layers              453.64       45.29%      47.14µs
+ 5 middleware layers              549.14       75.88%      47.38µs
+10 middleware layers              804.40      157.63%      49.22µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                         125.28        0.00%
+EventChains (logging+timing middleware)         321.65       156.75%
+
+Analysis:
+  Real-world overhead: 156.75%
+  Absolute cost: 196.37µs (0.79µs per event)
+
+  Trade-off analysis:
+     Manual: ~3750 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 99%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+  TEST SCALE: 500 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                  134.64        0.00%
+EventChains (no middleware)                     621.80       361.83%
+
+Analysis:
+  Framework overhead: 361.83%
+  Absolute cost: 487.16µs (0.97µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                    164.14        0.00%
+EventChains (no middleware)                     641.05       290.55%
+
+Analysis:
+  Abstraction overhead: 290.55%
+  Absolute cost: 476.91µs (0.95µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers              596.66     (baseline)       -
+ 1 middleware layers              699.05       17.16%     102.39µs
+ 3 middleware layers              901.13       51.03%     101.49µs
+ 5 middleware layers             1057.26       77.20%      92.12µs
+10 middleware layers             1575.82      164.11%      97.92µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                         269.89        0.00%
+EventChains (logging+timing middleware)         660.35       144.68%
+
+Analysis:
+  Real-world overhead: 144.68%
+  Absolute cost: 390.47µs (0.78µs per event)
+
+  Trade-off analysis:
+     Manual: ~7500 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 100%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+  TEST SCALE: 1000 Events per Chain
+==============================================================================
+
+
+|------------------------------------------------------------------------------|
+| TIER 1: Minimal Baseline - Cost of Orchestration Framework                  |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Direct function calls (no error handling, no tracking)
+  EventChains: Full pattern with 0 middleware
+  Metric: Pure framework overhead
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Bare Function Calls (baseline)                  290.89        0.00%
+EventChains (no middleware)                    1225.00       321.12%
+
+Analysis:
+  Framework overhead: 321.12%
+  Absolute cost: 934.11µs (0.93µs per event)
+  This represents the cost of:
+     Event wrapping and virtual dispatch
+     Context creation and management
+     Result object allocations
+     Chain coordination
+
+|------------------------------------------------------------------------------|
+| TIER 2: Feature-Parity - Cost of Abstraction vs Manual Implementation       |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Baseline: Manual error handling + tracking + cleanup
+  EventChains: Full pattern with 0 middleware
+  Metric: Cost of abstraction when features are equivalent
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (with error handling)                    295.85        0.00%
+EventChains (no middleware)                    1189.27       301.99%
+
+Analysis:
+  Abstraction overhead: 301.99%
+  Absolute cost: 893.42µs (0.89µs per event)
+  EventChains provides:
+     Consistent error handling
+     Automatic result tracking
+     Context management
+     Extensibility via middleware
+
+|------------------------------------------------------------------------------|
+| TIER 3: Middleware Scaling - Cost per Middleware Layer                      |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  EventChains with 0, 1, 3, 5, 10 middleware layers
+  Metric: Incremental cost of middleware composition
+
+Results (1000 iterations):
+--------------------------------------------------------------------------------
+Middleware Layers          Mean (µs)     Overhead    Per Layer
+--------------------------------------------------------------------------------
+ 0 middleware layers             1245.51     (baseline)       -
+ 1 middleware layers             1383.48       11.08%     137.97µs
+ 3 middleware layers             1794.59       44.08%     183.03µs
+ 5 middleware layers             2118.28       70.07%     174.55µs
+10 middleware layers             3129.29      151.24%     188.38µs
+--------------------------------------------------------------------------------
+
+Analysis:
+  Middleware scaling shows the incremental cost of composition.
+  Linear scaling indicates predictable performance.
+  Each middleware layer wraps event execution with custom logic.
+
+|------------------------------------------------------------------------------|
+| TIER 4: Real-World Scenario - Production-Ready Instrumentation              |
+|------------------------------------------------------------------------------|
+
+Comparison:
+  Manual: Logging + timing + error handling (scattered throughout)
+  EventChains: Logging + timing middleware (centralized)
+  Metric: Real-world overhead with full instrumentation
+
+Results (500 iterations):
+--------------------------------------------------------------------------------
+Implementation                              Mean (µs)      Overhead
+--------------------------------------------------------------------------------
+Manual (logging+timing)                         508.05        0.00%
+EventChains (logging+timing middleware)        1262.72       148.54%
+
+Analysis:
+  Real-world overhead: 148.54%
+  Absolute cost: 754.67µs (0.75µs per event)
+
+  Trade-off analysis:
+     Manual: ~15000 lines of repeated instrumentation code
+     EventChains: ~30 lines of reusable middleware
+     Code reduction: 100%
+     Maintainability: Centralized vs scattered
+     Testability: Middleware can be unit tested independently
+
+==============================================================================
+                     BENCHMARK COMPLETE
+==============================================================================

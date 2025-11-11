@@ -1,4 +1,4 @@
-|------------------------------------------------------------»
+|------------------------------------------------------------Â»
 |  EventChainsCore - Advanced Performance Benchmark         |
 |  CPU Time, Cache, Branch Prediction, Memory Bandwidth     |
 |  Windows 2000/XP Compatible Version                       |
@@ -18,7 +18,7 @@ Warming up...
 Warmup complete.
 
 -----------------------------------------------------------
-              ADVANCED BENCHMARK SUITE                      
+              ADVANCED BENCHMARK SUITE
 -----------------------------------------------------------
 
 |---------------------------------------------------------|
@@ -72,7 +72,7 @@ Warmup complete.
 | Benchmark 6: Event Switching Overhead                   |
 |---------------------------------------------------------|
   Events | Total Time | Avg Time |  Per Event  | vs Single
-  -------Å------------Å----------Å-------------Å----------
+  -------Ã…------------Ã…----------Ã…-------------Ã…----------
        1 |    70.25 ms |   0.0141 ms |    0.0141 ms | (baseline)
        5 |   158.52 ms |   0.0317 ms |    0.0063 ms |   4.41 us
       10 |   267.96 ms |   0.0536 ms |    0.0054 ms |   4.39 us
@@ -101,11 +101,11 @@ Warmup complete.
   Analysis:
   ---------------------------------------------------------
   This overhead includes:
-     Chain construction and setup
-     Context object creation and locking
-     EventResult object allocations
-     Virtual method dispatch
-     Result aggregation and metrics calculation
+    Chain construction and setup
+    Context object creation and locking
+    EventResult object allocations
+    Virtual method dispatch
+    Result aggregation and metrics calculation
 
 -----------------------------------------------------------
               BENCHMARK COMPLETE                            
