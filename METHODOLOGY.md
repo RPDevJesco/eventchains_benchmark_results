@@ -60,9 +60,13 @@ conservative approach:
 - Eliminates "compiler tricks" objections from reviewers
 - Shows that release builds provide 4-6x additional improvement
 
-This methodology reveals that EventChains exhibits sub-linear scaling
-characteristics **even without compiler optimization**, distinguishing
-architectural benefits from tooling-dependent performance.
+### What We Found
+
+This methodology revealed that EventChains exhibits sub-linear scaling -
+middleware costs decrease as composition depth increases - even in unoptimized
+code on modern CPUs. This behavior appears across multiple languages and
+platforms, validating that the sequential event processing architecture
+fundamentally enables CPU-level optimization.
 
 ### Our Solution: Four-Tier Analysis
 
