@@ -41,48 +41,9 @@ EventChains demonstrates **negative overhead at enterprise scale** - becoming fa
 
 ## Hardware Coverage
 
-### Modern Systems (2024)
-- **Windows Desktop**: Ryzen 9 7950X (32 cores), 128GB RAM
-- **macOS Desktop**: M4 iMac, 16GB RAM
-- **macOS Laptop**: M2 Macbook Pro, 16GB RAM
-- **ARM Embedded**: Raspberry Pi CM5 (Cortex-A76), via Box64 emulation
-
-### Vintage Hardware (2000)
-- **Compaq Armada E500**: Pentium III, Windows XP SP3, 256MB RAM
-
-### Cloud Platform
-- **Salesforce**: Managed multi-tenant environment with strict resource limits
-
-### Architecture Coverage
-- x86 (Pentium III)
-- x86_64 (Ryzen 9)
-- ARM64 (M2, M4, Raspberry Pi CM5
+See [hardware/specifications.md](hardware/specifications.md) for detailed explanation of the approach and pitfalls avoided.
 
 ## Methodology: Four-Tier Benchmarking
-
-This study uses a rigorous multi-tier approach to avoid common benchmarking pitfalls:
-
-### Tier 1: Minimal Baseline
-**Measures**: Pure framework overhead vs bare function calls  
-**Purpose**: Establishes minimum cost floor  
-**Comparison**: Bare functions → EventChains (0 middleware)
-
-### Tier 2: Feature-Parity Baseline
-**Measures**: Abstraction cost vs hand-rolled equivalent  
-**Purpose**: Validates that abstraction cost is reasonable  
-**Comparison**: Manual error handling + tracking → EventChains (same features)
-
-### Tier 3: Middleware Scaling
-**Measures**: Cost per middleware layer  
-**Purpose**: Proves linear scaling and composability  
-**Comparison**: EventChains with 0, 1, 3, 5, 10 middleware layers
-
-### Tier 4: Real-World Scenario
-**Measures**: Production instrumentation overhead  
-**Purpose**: Demonstrates actual production performance  
-**Comparison**: Manual logging/timing/error handling → EventChains middleware
-
-**Why Multi-Tier?** Single-metric comparisons are misleading. A 1000% overhead on a 0.01µs operation is still only 0.1µs total. Multi-tier testing provides context and validates that the pattern scales appropriately.
 
 See [METHODOLOGY.md](METHODOLOGY.md) for detailed explanation of the approach and pitfalls avoided.
 
@@ -182,7 +143,7 @@ Academic paper forthcoming on arXiv.
 
 - **Benchmark Data**: CC-BY 4.0 (Creative Commons Attribution)
 - **Analysis Tools**: MIT License
-- **EventChains Implementations**: MIT License (see individual repos)
+- **EventChains Implementations**: MIT License
 
 ## Contributing
 
