@@ -1,0 +1,968 @@
+Box64 arm64 v0.3.9 7fec3550 with Dynarec built on Nov 11 2025 00:11:10
+Dynarec for ARM64, with extension: ASIMD AES CRC32 PMULL ATOMICS SHA1 SHA2
+Running on Cortex-A76 with 4 cores, pagesize: 16384
+Will use hardware counter measured at 54.0 MHz emulating 3.4 GHz
+Detected 48bits at least of address space
+Counted 27 Env var
+Library search path:
+Binary search path: ./:bin/:/home/coburn/bin/:/usr/local/sbin/:/usr/local/bin/:/usr/sbin/:/usr/bin/:/sbin/:/bin/:/usr/local/games/:/usr/games/
+Looking for ./dijkstra_eventchains
+Rename process to "dijkstra_eventchains"
+Using emulated lib/libgcc_s.so.1
+Using native(wrapped) libc.so.6
+Using native(wrapped) ld-linux-x86-64.so.2
+Using native(wrapped) libpthread.so.0
+Using native(wrapped) libdl.so.2
+Using native(wrapped) libutil.so.1
+Using native(wrapped) libresolv.so.2
+Using native(wrapped) librt.so.1
+Using native(wrapped) libbsd.so.0
+==========================================================================================
+EventChains Comprehensive Performance Analysis
+==========================================================================================
+
+Measuring: CPU, Memory, Cache Behavior, and Latency Variance
+
+
+=== TEST CASE: 100 nodes, 500 edges, 100 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 99
+
+Running Tier 1 Comprehensive Benchmarks...
+  Benchmarking bare function calls... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 2 Comprehensive Benchmarks...
+  Benchmarking manual instrumented... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 3 Comprehensive Benchmarks...
+  Benchmarking 0 middleware... ✓
+  Benchmarking 1 middleware... ✓
+  Benchmarking 3 middleware... ✓
+  Benchmarking 5 middleware... ✓
+  Benchmarking 10 middleware... ✓
+
+Running Tier 4 Comprehensive Benchmarks...
+  Benchmarking manual (logging + timing)... ✓
+  Benchmarking EventChains (logging + timing)... ✓
+
+==========================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                                18.18           48.87        +168.75%
+Median (μs)                              16.72           47.63               -
+P95 (μs)                                 17.46           50.68               -
+P99 (μs)                                151.03          137.22               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                             13.37            9.01         -32.65%
+Coefficient of Var (%)                   73.53           18.43        -55.10pp
+Min-Max Range (μs)                      134.39           89.78               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                          5.05            7.72         +52.76%
+Total Allocated (KB)                    614.29         1128.36               -
+Allocation Count                          1111            3737           +2626
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                  18184.74        48869.13        +168.74%
+Variance (ns²)                    178789233.69     81110840.15               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:      168.75%
+  Memory Overhead:    52.76%
+  Latency Variance:   18.43% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the pure cost of the EventChains framework:
+  - Event wrapping and trait dispatch overhead
+  - Context creation and type erasure costs
+  - Result enum wrapping impact
+  - Memory allocations from the framework
+
+==========================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                                42.40           47.58         +12.23%
+Median (μs)                              41.22           47.35               -
+P95 (μs)                                 43.83           48.70               -
+P99 (μs)                                129.94           54.46               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              8.88            1.04         -88.29%
+Coefficient of Var (%)                   20.95            2.19        -18.77pp
+Min-Max Range (μs)                       88.89            7.33               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                          5.21            7.72         +48.18%
+Total Allocated (KB)                    630.07         1128.36               -
+Allocation Count                          1313            3737           +2424
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                  42396.27        47580.32         +12.23%
+Variance (ns²)                     78909923.00      1082254.58               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:       12.23%
+  Memory Overhead:    48.18%
+  Latency Variance:    2.19% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the cost of abstraction:
+  - Generic trait-based design vs concrete types
+  - Dynamic dispatch vs static dispatch
+  - Type-erased context vs typed variables
+
+==========================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+==========================================================================================
+
+⏱  Timing Scaling
+------------------------------------------------------------------------------------------
+Middleware Count             Mean (μs)   Overhead %  Per MW (μs)     Memory (KB)
+------------------------------------------------------------------------------------------
+0 middleware                     48.33     baseline        0.000            7.72
+1 middleware                     52.81 +9.29%        4.488            7.86
+3 middleware                     59.22 +22.55%        3.632            8.34
+5 middleware                     66.63 +37.88%        3.661            8.56
+10 middleware                    87.60 +81.28%        3.928            9.73
+
+📊 Latency Variance by Middleware Count
+------------------------------------------------------------------------------------------
+Middleware Count             Std Dev (μs)         CoV (%)        P99 (μs)
+------------------------------------------------------------------------------------------
+0 middleware                         7.97           16.50          126.96
+1 middleware                         5.49           10.39           99.89
+3 middleware                         0.84            1.43           66.59
+5 middleware                         0.87            1.30           73.15
+10 middleware                        1.25            1.43           94.02
+
+Interpretation:
+  - Per-middleware cost shows if overhead scales linearly
+  - Latency variance indicates performance predictability
+  - Memory scaling shows allocation patterns
+
+==========================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Work
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                                41.96           54.61         +30.16%
+Median (μs)                              41.37           53.08               -
+P95 (μs)                                 43.28           56.69               -
+P99 (μs)                                 80.50          139.55               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              3.99            9.45        +136.56%
+Coefficient of Var (%)                    9.52           17.29         +7.78pp
+Min-Max Range (μs)                       39.31           86.72               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                          5.18            7.86         +51.79%
+Total Allocated (KB)                    626.91         1235.47               -
+Allocation Count                          1212            5757           +4545
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                  41960.33        54614.63         +30.16%
+Variance (ns²)                     15941868.08     89213965.69               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:       30.16%
+  Memory Overhead:    51.79%
+  Latency Variance:   17.29% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows real-world performance:
+  - EventChains vs manual logging and timing
+  - Trade-off between convenience and performance
+  - Value of consistent middleware API
+
+==========================================================================================
+Executive Summary - Comprehensive Analysis
+==========================================================================================
+
+🎯 Key Findings:
+
+  1. Framework Overhead (Tier 1):
+     CPU:      168.75%
+     Memory:    52.76%
+     Latency Variance (CoV):   18.43%
+
+  2. Abstraction Overhead (Tier 2):
+     CPU:       12.23%
+     Memory:    48.18%
+     Latency Variance (CoV):    2.19%
+
+  3. Middleware Cost (Tier 3):
+     Per Layer:        3.661 μs
+     5 Middleware:     37.88% overhead
+     Memory Impact:    10.96% increase
+
+  4. Real-World Comparison (Tier 4):
+     CPU:       30.16%
+     Memory:    51.79%
+     Predictability: CoV 9.52% vs 17.29%
+
+🔍 Latency Analysis:
+  EventChains maintains consistent performance:
+  - P99 latency within 188.10% of median
+  - Low coefficient of variation: 18.43%
+
+💾 Memory Analysis:
+  Peak memory overhead across tiers:
+  - Tier 1: 2.67 KB (52.8% increase)
+  - Tier 4: 2.68 KB (51.8% increase)
+
+✅ Conclusion:
+  EventChains shows measurable overhead but provides:
+  • Consistent abstraction layer
+  • Composable middleware
+  • Improved maintainability
+
+==========================================================================================
+
+
+=== TEST CASE: 500 nodes, 2500 edges, 50 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 499
+
+Running Tier 1 Comprehensive Benchmarks...
+  Benchmarking bare function calls... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 2 Comprehensive Benchmarks...
+  Benchmarking manual instrumented... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 3 Comprehensive Benchmarks...
+  Benchmarking 0 middleware... ✓
+  Benchmarking 1 middleware... ✓
+  Benchmarking 3 middleware... ✓
+  Benchmarking 5 middleware... ✓
+  Benchmarking 10 middleware... ✓
+
+Running Tier 4 Comprehensive Benchmarks...
+  Benchmarking manual (logging + timing)... ✓
+  Benchmarking EventChains (logging + timing)... ✓
+
+==========================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               104.64          180.97         +72.94%
+Median (μs)                             103.95          180.03               -
+P95 (μs)                                109.59          186.15               -
+P99 (μs)                                113.61          190.94               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              2.12            2.47         +16.20%
+Coefficient of Var (%)                    2.03            1.36         -0.67pp
+Min-Max Range (μs)                       10.22           11.76               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         34.25           45.12         +31.73%
+Total Allocated (KB)                   2156.54         3252.45               -
+Allocation Count                           714            2040           +1326
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 104643.38       180973.82         +72.94%
+Variance (ns²)                      4503444.76      6081073.63               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:       72.94%
+  Memory Overhead:    31.73%
+  Latency Variance:    1.36% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the pure cost of the EventChains framework:
+  - Event wrapping and trait dispatch overhead
+  - Context creation and type erasure costs
+  - Result enum wrapping impact
+  - Memory allocations from the framework
+
+==========================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               177.19          180.16          +1.68%
+Median (μs)                             176.66          179.63               -
+P95 (μs)                                181.03          182.98               -
+P99 (μs)                                183.94          184.85               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              1.59            1.20         -24.43%
+Coefficient of Var (%)                    0.90            0.67         -0.23pp
+Min-Max Range (μs)                        7.94            5.59               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         34.41           45.12         +31.13%
+Total Allocated (KB)                   2164.51         3252.45               -
+Allocation Count                           816            2040           +1224
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 177189.72       180165.34          +1.68%
+Variance (ns²)                      2534578.44      1447353.18               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        1.68%
+  Memory Overhead:    31.13%
+  Latency Variance:    0.67% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the cost of abstraction:
+  - Generic trait-based design vs concrete types
+  - Dynamic dispatch vs static dispatch
+  - Type-erased context vs typed variables
+
+==========================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+==========================================================================================
+
+⏱  Timing Scaling
+------------------------------------------------------------------------------------------
+Middleware Count             Mean (μs)   Overhead %  Per MW (μs)     Memory (KB)
+------------------------------------------------------------------------------------------
+0 middleware                    179.57     baseline        0.000           45.12
+1 middleware                    182.36 +1.55%        2.791           45.26
+3 middleware                    187.06 +4.17%        2.498           45.75
+5 middleware                    191.84 +6.83%        2.455           45.97
+10 middleware                   205.94 +14.68%        2.637           47.13
+
+📊 Latency Variance by Middleware Count
+------------------------------------------------------------------------------------------
+Middleware Count             Std Dev (μs)         CoV (%)        P99 (μs)
+------------------------------------------------------------------------------------------
+0 middleware                         0.86            0.48          183.74
+1 middleware                         1.00            0.55          186.41
+3 middleware                         0.81            0.43          190.78
+5 middleware                         0.70            0.37          195.33
+10 middleware                        1.24            0.60          213.24
+
+Interpretation:
+  - Per-middleware cost shows if overhead scales linearly
+  - Latency variance indicates performance predictability
+  - Memory scaling shows allocation patterns
+
+==========================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Work
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               174.14          183.76          +5.52%
+Median (μs)                             173.30          183.06               -
+P95 (μs)                                178.18          188.00               -
+P99 (μs)                                182.46          190.87               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              1.94            1.78          -8.44%
+Coefficient of Var (%)                    1.11            0.97         -0.15pp
+Min-Max Range (μs)                        9.67            8.48               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         34.38           45.26         +31.66%
+Total Allocated (KB)                   2162.92         3306.53               -
+Allocation Count                           765            3060           +2295
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 174141.68       183758.16          +5.52%
+Variance (ns²)                      3765329.30      3156546.81               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        5.52%
+  Memory Overhead:    31.66%
+  Latency Variance:    0.97% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows real-world performance:
+  - EventChains vs manual logging and timing
+  - Trade-off between convenience and performance
+  - Value of consistent middleware API
+
+==========================================================================================
+Executive Summary - Comprehensive Analysis
+==========================================================================================
+
+🎯 Key Findings:
+
+  1. Framework Overhead (Tier 1):
+     CPU:       72.94%
+     Memory:    31.73%
+     Latency Variance (CoV):    1.36%
+
+  2. Abstraction Overhead (Tier 2):
+     CPU:        1.68%
+     Memory:    31.13%
+     Latency Variance (CoV):    0.67%
+
+  3. Middleware Cost (Tier 3):
+     Per Layer:        2.455 μs
+     5 Middleware:      6.83% overhead
+     Memory Impact:     1.87% increase
+
+  4. Real-World Comparison (Tier 4):
+     CPU:        5.52%
+     Memory:    31.66%
+     Predictability: CoV 1.11% vs 0.97%
+
+🔍 Latency Analysis:
+  EventChains maintains consistent performance:
+  - P99 latency within 6.06% of median
+  - Low coefficient of variation: 1.36%
+
+💾 Memory Analysis:
+  Peak memory overhead across tiers:
+  - Tier 1: 10.87 KB (31.7% increase)
+  - Tier 4: 10.88 KB (31.7% increase)
+
+✅ Conclusion:
+  EventChains shows measurable overhead but provides:
+  • Consistent abstraction layer
+  • Composable middleware
+  • Improved maintainability
+
+==========================================================================================
+
+
+=== TEST CASE: 1000 nodes, 5000 edges, 30 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 999
+
+Running Tier 1 Comprehensive Benchmarks...
+  Benchmarking bare function calls... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 2 Comprehensive Benchmarks...
+  Benchmarking manual instrumented... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 3 Comprehensive Benchmarks...
+  Benchmarking 0 middleware... ✓
+  Benchmarking 1 middleware... ✓
+  Benchmarking 3 middleware... ✓
+  Benchmarking 5 middleware... ✓
+  Benchmarking 10 middleware... ✓
+
+Running Tier 4 Comprehensive Benchmarks...
+  Benchmarking manual (logging + timing)... ✓
+  Benchmarking EventChains (logging + timing)... ✓
+
+==========================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                                28.73          381.24       +1226.89%
+Median (μs)                              28.20          380.25               -
+P95 (μs)                                 31.52          386.48               -
+P99 (μs)                                 34.42          390.00               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              1.30            2.50         +92.93%
+Coefficient of Var (%)                    4.51            0.66         -3.86pp
+Min-Max Range (μs)                        6.33           10.91               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         44.51           89.63        +101.38%
+Total Allocated (KB)                   1628.71         3922.83               -
+Allocation Count                           434            1271            +837
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                  28732.90       381241.67       +1226.85%
+Variance (ns²)                      1680523.29      6255169.62               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:     1226.89%
+  Memory Overhead:   101.38%
+  Latency Variance:    0.66% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the pure cost of the EventChains framework:
+  - Event wrapping and trait dispatch overhead
+  - Context creation and type erasure costs
+  - Result enum wrapping impact
+  - Memory allocations from the framework
+
+==========================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               374.40          380.56          +1.64%
+Median (μs)                             373.95          379.80               -
+P95 (μs)                                377.38          383.94               -
+P99 (μs)                                380.22          390.07               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              1.53            2.15         +40.15%
+Coefficient of Var (%)                    0.41            0.56         +0.16pp
+Min-Max Range (μs)                        7.32           11.11               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         68.66           89.63         +30.53%
+Total Allocated (KB)                   2625.55         3922.83               -
+Allocation Count                           527            1271            +744
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 374404.07       380558.90          +1.64%
+Variance (ns²)                      2348262.73      4612158.16               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        1.64%
+  Memory Overhead:    30.53%
+  Latency Variance:    0.56% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the cost of abstraction:
+  - Generic trait-based design vs concrete types
+  - Dynamic dispatch vs static dispatch
+  - Type-erased context vs typed variables
+
+==========================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+==========================================================================================
+
+⏱  Timing Scaling
+------------------------------------------------------------------------------------------
+Middleware Count             Mean (μs)   Overhead %  Per MW (μs)     Memory (KB)
+------------------------------------------------------------------------------------------
+0 middleware                    380.28     baseline        0.000           89.63
+1 middleware                    382.81 +0.67%        2.529           89.77
+3 middleware                    388.77 +2.23%        2.832           90.25
+5 middleware                    392.79 +3.29%        2.502           90.48
+10 middleware                   407.74 +7.22%        2.746           91.64
+
+📊 Latency Variance by Middleware Count
+------------------------------------------------------------------------------------------
+Middleware Count             Std Dev (μs)         CoV (%)        P99 (μs)
+------------------------------------------------------------------------------------------
+0 middleware                         1.23            0.32          384.38
+1 middleware                         1.45            0.38          387.46
+3 middleware                         4.21            1.08          410.59
+5 middleware                         1.36            0.35          398.42
+10 middleware                        1.23            0.30          412.61
+
+Interpretation:
+  - Per-middleware cost shows if overhead scales linearly
+  - Latency variance indicates performance predictability
+  - Memory scaling shows allocation patterns
+
+==========================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Work
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               375.56          385.69          +2.70%
+Median (μs)                             374.76          384.90               -
+P95 (μs)                                378.98          388.96               -
+P99 (μs)                                382.16          393.40               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              1.99            1.85          -6.91%
+Coefficient of Var (%)                    0.53            0.48         -0.05pp
+Min-Max Range (μs)                        8.81            9.45               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         68.63           89.77         +30.80%
+Total Allocated (KB)                   2624.59         3955.71               -
+Allocation Count                           496            1891           +1395
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 375561.53       385687.83          +2.70%
+Variance (ns²)                      3943544.65      3417430.27               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        2.70%
+  Memory Overhead:    30.80%
+  Latency Variance:    0.48% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows real-world performance:
+  - EventChains vs manual logging and timing
+  - Trade-off between convenience and performance
+  - Value of consistent middleware API
+
+==========================================================================================
+Executive Summary - Comprehensive Analysis
+==========================================================================================
+
+🎯 Key Findings:
+
+  1. Framework Overhead (Tier 1):
+     CPU:     1226.89%
+     Memory:   101.38%
+     Latency Variance (CoV):    0.66%
+
+  2. Abstraction Overhead (Tier 2):
+     CPU:        1.64%
+     Memory:    30.53%
+     Latency Variance (CoV):    0.56%
+
+  3. Middleware Cost (Tier 3):
+     Per Layer:        2.502 μs
+     5 Middleware:      3.29% overhead
+     Memory Impact:     0.94% increase
+
+  4. Real-World Comparison (Tier 4):
+     CPU:        2.70%
+     Memory:    30.80%
+     Predictability: CoV 0.53% vs 0.48%
+
+🔍 Latency Analysis:
+  EventChains maintains consistent performance:
+  - P99 latency within 2.56% of median
+  - Low coefficient of variation: 0.66%
+
+💾 Memory Analysis:
+  Peak memory overhead across tiers:
+  - Tier 1: 45.12 KB (101.4% increase)
+  - Tier 4: 21.14 KB (30.8% increase)
+
+✅ Conclusion:
+  EventChains shows measurable overhead but provides:
+  • Consistent abstraction layer
+  • Composable middleware
+  • Improved maintainability
+
+==========================================================================================
+
+
+=== TEST CASE: 2000 nodes, 10000 edges, 20 runs ===
+
+Graph generated successfully!
+  Source node: 0
+  Target node: 1999
+
+Running Tier 1 Comprehensive Benchmarks...
+  Benchmarking bare function calls... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 2 Comprehensive Benchmarks...
+  Benchmarking manual instrumented... ✓
+  Benchmarking EventChains (no middleware)... ✓
+
+Running Tier 3 Comprehensive Benchmarks...
+  Benchmarking 0 middleware... ✓
+  Benchmarking 1 middleware... ✓
+  Benchmarking 3 middleware... ✓
+  Benchmarking 5 middleware... ✓
+  Benchmarking 10 middleware... ✓
+
+Running Tier 4 Comprehensive Benchmarks...
+  Benchmarking manual (logging + timing)... ✓
+  Benchmarking EventChains (logging + timing)... ✓
+
+==========================================================================================
+TIER 1: Minimal Baseline - Cost of Orchestration Framework
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                                99.28          850.77        +756.95%
+Median (μs)                              98.04          849.18               -
+P95 (μs)                                106.78          860.90               -
+P99 (μs)                                106.78          860.90               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              3.00            4.18         +39.31%
+Coefficient of Var (%)                    3.02            0.49         -2.53pp
+Min-Max Range (μs)                        9.89           14.37               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                         89.02          178.65        +100.69%
+Total Allocated (KB)                   2205.98         5293.39               -
+Allocation Count                           315             882            +567
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                  99279.00       850775.35        +756.95%
+Variance (ns²)                      9018817.40     17503141.13               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:      756.95%
+  Memory Overhead:   100.69%
+  Latency Variance:    0.49% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the pure cost of the EventChains framework:
+  - Event wrapping and trait dispatch overhead
+  - Context creation and type erasure costs
+  - Result enum wrapping impact
+  - Memory allocations from the framework
+
+==========================================================================================
+TIER 2: Feature-Parity Baseline - Cost of Abstraction
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               833.46          849.58          +1.93%
+Median (μs)                             832.13          849.04               -
+P95 (μs)                                845.67          853.82               -
+P99 (μs)                                845.67          853.82               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              3.71            2.00         -46.04%
+Coefficient of Var (%)                    0.45            0.24         -0.21pp
+Min-Max Range (μs)                       15.61            6.78               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                        137.17          178.65         +30.23%
+Total Allocated (KB)                   3553.27         5293.39               -
+Allocation Count                           378             882            +504
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 833457.10       849577.15          +1.93%
+Variance (ns²)                     13778862.29      4012564.33               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        1.93%
+  Memory Overhead:    30.23%
+  Latency Variance:    0.24% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows the cost of abstraction:
+  - Generic trait-based design vs concrete types
+  - Dynamic dispatch vs static dispatch
+  - Type-erased context vs typed variables
+
+==========================================================================================
+TIER 3: Middleware Scaling - Cost per Middleware Layer
+==========================================================================================
+
+⏱  Timing Scaling
+------------------------------------------------------------------------------------------
+Middleware Count             Mean (μs)   Overhead %  Per MW (μs)     Memory (KB)
+------------------------------------------------------------------------------------------
+0 middleware                    849.05     baseline        0.000          178.65
+1 middleware                    851.19 +0.25%        2.137          178.79
+3 middleware                    856.99 +0.94%        2.647          179.27
+5 middleware                    861.99 +1.52%        2.588          179.49
+10 middleware                   878.82 +3.51%        2.977          180.66
+
+📊 Latency Variance by Middleware Count
+------------------------------------------------------------------------------------------
+Middleware Count             Std Dev (μs)         CoV (%)        P99 (μs)
+------------------------------------------------------------------------------------------
+0 middleware                         2.57            0.30          855.21
+1 middleware                         2.07            0.24          855.95
+3 middleware                         2.15            0.25          862.53
+5 middleware                         1.68            0.20          866.47
+10 middleware                        2.20            0.25          883.80
+
+Interpretation:
+  - Per-middleware cost shows if overhead scales linearly
+  - Latency variance indicates performance predictability
+  - Memory scaling shows allocation patterns
+
+==========================================================================================
+TIER 4: Real-World Scenario - Cost vs Equivalent Manual Work
+==========================================================================================
+
+⏱  Timing Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Mean (μs)                               837.32          854.21          +2.02%
+Median (μs)                             835.41          853.21               -
+P95 (μs)                                861.65          865.08               -
+P99 (μs)                                861.65          865.08               -
+
+📊 Latency Variance
+------------------------------------------------------------------------------------------
+Std Dev (μs)                              6.32            3.40         -46.21%
+Coefficient of Var (%)                    0.76            0.40         -0.36pp
+Min-Max Range (μs)                       29.63           14.33               -
+
+💾 Memory Metrics
+------------------------------------------------------------------------------------------
+Metric                                Baseline          Tested        Overhead
+------------------------------------------------------------------------------------------
+Peak Memory (KB)                        137.14          178.79         +30.37%
+Total Allocated (KB)                   3552.61         5315.67               -
+Allocation Count                           357            1302            +945
+
+🎯 Cache Behavior (approximated via timing)
+------------------------------------------------------------------------------------------
+Avg Access Time (ns)                 837318.00       854213.25          +2.02%
+Variance (ns²)                     40005130.20     11576926.19               -
+
+📋 Summary
+------------------------------------------------------------------------------------------
+  CPU Overhead:        2.02%
+  Memory Overhead:    30.37%
+  Latency Variance:    0.40% (CoV)
+  Success Rate:      100.00%
+
+Interpretation:
+  This tier shows real-world performance:
+  - EventChains vs manual logging and timing
+  - Trade-off between convenience and performance
+  - Value of consistent middleware API
+
+==========================================================================================
+Executive Summary - Comprehensive Analysis
+==========================================================================================
+
+🎯 Key Findings:
+
+  1. Framework Overhead (Tier 1):
+     CPU:      756.95%
+     Memory:   100.69%
+     Latency Variance (CoV):    0.49%
+
+  2. Abstraction Overhead (Tier 2):
+     CPU:        1.93%
+     Memory:    30.23%
+     Latency Variance (CoV):    0.24%
+
+  3. Middleware Cost (Tier 3):
+     Per Layer:        2.588 μs
+     5 Middleware:      1.52% overhead
+     Memory Impact:     0.47% increase
+
+  4. Real-World Comparison (Tier 4):
+     CPU:        2.02%
+     Memory:    30.37%
+     Predictability: CoV 0.76% vs 0.40%
+
+🔍 Latency Analysis:
+  EventChains maintains consistent performance:
+  - P99 latency within 1.38% of median
+  - Low coefficient of variation: 0.49%
+
+💾 Memory Analysis:
+  Peak memory overhead across tiers:
+  - Tier 1: 89.63 KB (100.7% increase)
+  - Tier 4: 41.65 KB (30.4% increase)
+
+✅ Conclusion:
+  EventChains shows measurable overhead but provides:
+  • Consistent abstraction layer
+  • Composable middleware
+  • Improved maintainability
+
+==========================================================================================
+
+==========================================================================================
+All Comprehensive Benchmarks Complete!
+==========================================================================================
