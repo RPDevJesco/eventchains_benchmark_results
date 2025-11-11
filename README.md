@@ -22,12 +22,12 @@ EventChains demonstrates **negative overhead at enterprise scale** - becoming fa
 
 ### Key Findings
 
-| Metric | Best Case | Typical Case | Status |
-|--------|-----------|--------------|--------|
-| Framework Overhead (T1) | C: +0.15µs (47%) | C#: +6µs (7-15%) | ✅ Excellent |
-| Abstraction Cost (T2) | C: +0.08µs (23%) | C#: +6µs (14-23%) | ✅ Good |
-| Middleware Cost (T3) | C: 0.018µs/layer | C#: 0.029-0.122µs/layer | ✅ Excellent |
-| **Negative Overhead** | **Rust 500 nodes: -169µs (-22.84%)** | Demonstrated at scale | 🔥 Innovation |
+| Metric | Best Case | Typical Case | Status    |
+|--------|-----------|--------------|-----------|
+| Framework Overhead (T1) | C: +0.15µs (47%) | C#: +6µs (7-15%) | Excellent |
+| Abstraction Cost (T2) | C: +0.08µs (23%) | C#: +6µs (14-23%) | Good      |
+| Middleware Cost (T3) | C: 0.018µs/layer | C#: 0.029-0.122µs/layer | Excellent |
+| **Negative Overhead** | **Rust 500 nodes: -169µs (-22.84%)** | Demonstrated at scale | Insanity  |
 
 ## Languages Tested
 
@@ -103,8 +103,8 @@ Traditional abstraction layers impose performance costs. EventChains demonstrate
 
 ### When It Emerges
 - **Small workloads** (<100 operations/event): +7-15% overhead (expected)
-- **Enterprise workloads** (100+ operations/event): Overhead approaches zero
-- **Large-scale processing** (500+ nodes): Negative overhead (-22.84% demonstrated)
+- **Enterprise workloads** (500+ operations/event): Overhead approaches zero
+- **Large-scale processing** (1000+ nodes): Negative overhead (-22.84% demonstrated)
 
 ## Production Validation
 
