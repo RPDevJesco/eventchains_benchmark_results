@@ -1,0 +1,135 @@
+===========================================
+Dijkstra's Algorithm: EventChains vs Traditional
+===========================================
+
+========================================
+Benchmark: 100 nodes, 500 edges
+========================================
+
+--- Traditional Dijkstra ---
+Time: 0.026 ms (25599 ns)
+Memory: 2024 bytes (3 allocations)
+
+--- EventChains (Bare) ---
+Time: 0.054 ms (53987 ns)
+Memory: 2028 bytes (4 allocations)
+Context lookups: 13
+
+--- EventChains (Full Middleware) ---
+Time: 0.036 ms (35684 ns)
+Memory: 2028 bytes (4 allocations)
+Context lookups: 13
+Middleware calls: 0
+Event wrapping overhead: 0 ns (estimated)
+
+--- Overhead Analysis ---
+Traditional (baseline): 0.026 ms
+EventChains (bare): 0.054 ms (+110.9% overhead)
+EventChains (full): 0.036 ms (+39.4% overhead)
+
+Overhead breakdown:
+  Event wrapping: +110.9% (+28388 ns)
+  Context lookups: +1.0% (260 ns, 13 lookups)
+  Middleware calls: -71.5% (-18303 ns, 0 calls)
+
+--- Verification ---
+Results match: YES
+
+========================================
+Benchmark: 500 nodes, 2500 edges
+========================================
+
+--- Traditional Dijkstra ---
+Time: 0.168 ms (168302 ns)
+Memory: 10024 bytes (3 allocations)
+
+--- EventChains (Bare) ---
+Time: 0.172 ms (171908 ns)
+Memory: 10028 bytes (4 allocations)
+Context lookups: 13
+
+--- EventChains (Full Middleware) ---
+Time: 0.146 ms (145510 ns)
+Memory: 10028 bytes (4 allocations)
+Context lookups: 13
+Middleware calls: 0
+Event wrapping overhead: 0 ns (estimated)
+
+--- Overhead Analysis ---
+Traditional (baseline): 0.168 ms
+EventChains (bare): 0.172 ms (+2.1% overhead)
+EventChains (full): 0.146 ms (-13.5% overhead)
+
+Overhead breakdown:
+  Event wrapping: +2.1% (+3606 ns)
+  Context lookups: +0.2% (260 ns, 13 lookups)
+  Middleware calls: -15.7% (-26398 ns, 0 calls)
+
+--- Verification ---
+Results match: YES
+
+========================================
+Benchmark: 1000 nodes, 5000 edges
+========================================
+
+--- Traditional Dijkstra ---
+Time: 0.345 ms (345492 ns)
+Memory: 20024 bytes (3 allocations)
+
+--- EventChains (Bare) ---
+Time: 0.345 ms (345150 ns)
+Memory: 20028 bytes (4 allocations)
+Context lookups: 13
+
+--- EventChains (Full Middleware) ---
+Time: 0.340 ms (339513 ns)
+Memory: 20028 bytes (4 allocations)
+Context lookups: 13
+Middleware calls: 0
+Event wrapping overhead: 0 ns (estimated)
+
+--- Overhead Analysis ---
+Traditional (baseline): 0.345 ms
+EventChains (bare): 0.345 ms (-0.1% overhead)
+EventChains (full): 0.340 ms (-1.7% overhead)
+
+Overhead breakdown:
+  Event wrapping: -0.1% (-342 ns)
+  Context lookups: +0.1% (260 ns, 13 lookups)
+  Middleware calls: -1.6% (-5637 ns, 0 calls)
+
+--- Verification ---
+Results match: YES
+
+========================================
+Benchmark: 2000 nodes, 10000 edges
+========================================
+
+--- Traditional Dijkstra ---
+Time: 0.453 ms (452803 ns)
+Memory: 40024 bytes (3 allocations)
+
+--- EventChains (Bare) ---
+Time: 0.302 ms (301645 ns)
+Memory: 40028 bytes (4 allocations)
+Context lookups: 13
+
+--- EventChains (Full Middleware) ---
+Time: 0.282 ms (281532 ns)
+Memory: 40028 bytes (4 allocations)
+Context lookups: 13
+Middleware calls: 0
+Event wrapping overhead: 0 ns (estimated)
+
+--- Overhead Analysis ---
+Traditional (baseline): 0.453 ms
+EventChains (bare): 0.302 ms (-33.4% overhead)
+EventChains (full): 0.282 ms (-37.8% overhead)
+
+Overhead breakdown:
+  Event wrapping: -33.4% (-151158 ns)
+  Context lookups: +0.1% (260 ns, 13 lookups)
+  Middleware calls: -4.4% (-20113 ns, 0 calls)
+
+--- Verification ---
+Results match: YES

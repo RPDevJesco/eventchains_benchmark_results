@@ -1,6 +1,6 @@
 # EventChains Performance Benchmarks
 
-Comprehensive performance validation of the EventChains middleware pattern across multiple programming languages, hardware platforms, and 24 years of hardware evolution (2000-2024).
+Comprehensive performance validation of the EventChains middleware pattern across multiple programming languages, hardware platforms, and 24 years of hardware evolution (2000-2025).
 
 ## Repository Contents
 
@@ -133,7 +133,7 @@ If you use EventChains or reference this benchmark data, please cite:
 
 ```
 EventChains: A Composable Middleware Pattern with Negative Overhead at Scale
-Jesco, 2024
+Jesco, 2025
 https://github.com/RPDevJesco/eventchains_benchmark_results
 ```
 
@@ -166,7 +166,7 @@ For questions about the benchmarks or EventChains pattern:
 
 ## Acknowledgments
 
-- **Raspberry Pi Benchmarks**: Contributed by https://github.com/SoftwareGuy
+- **Raspberry Pi and N100 Benchmarks**: Contributed by https://github.com/SoftwareGuy
 
 ---
 
